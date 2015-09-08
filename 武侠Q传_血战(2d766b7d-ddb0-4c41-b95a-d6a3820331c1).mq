@@ -107,15 +107,11 @@ Function DF_巅峰战斗ING()
 	
     Do
         If DF_没有巅峰令牌() Then 
-            KeyPress "Power"
-            Delay 1000 
-            EndScript
+            exit_and_screen_off()
         End If
     	
         If DF_战斗次数已用完() Then 
-            KeyPress "Power"
-            Delay 1000
-            EndScript
+            exit_and_screen_off()
         End If
     	
         DF_通过点击尝试跳过 
@@ -607,7 +603,6 @@ Function skip_fighting
         Delay 500
     	
         If attempt_tap Then 
-            TracePrint "试图点击(87, 964)"
             Tap 87, 964
             Delay 100
         End If
@@ -648,25 +643,6 @@ Function fast_fighting_enabled
     Else 
         fast_fighting_enabled = False
     End If
-End Function
-
-Function waiting_for_fighting_result_ui_dismiss
-    ReleaseCapture 
-    Dim delays = 100
-    
-    Do
-        If in_fighting_result_ui() Then 
-            If delays > 10 Then 
-                Delay delays
-                delays = delays - 1
-            Else 
-                Exit Function
-            End If
-
-        Else 
-            Exit Function
-        End If		
-    Loop
 End Function
 
 Function 败北
@@ -719,15 +695,23 @@ Dim attr_color_15 = Array("A575D6", "5B75C6", "6BCAEF", "A5AA52", "63B25A")
 Dim attr_color_30 = Array("9C79C5", "6375D6", "73CAE6", "9C9E5A", "63AA52")
 Dim attr_names = Array("气血", "武力", "防御", "内力", "身法")
 
+Function exit_and_screen_off()
+	KeyPress "Power"
+	Delay 1000
+	EndScript
+End Function
+
 Function 闯关
 
     Do
+    	ReleaseCapture
+    	Rem LoopEntry
+    	Delay 50
         KeepCapture 
         
         TracePrint "......当前关卡为：" & 当前关卡
         If in_fighting_mode_option_ui() Then 
             Dim is_fast_fighting_enabled = fast_fighting_enabled()
-            ReleaseCapture 
             
             If 当前模式 = "闯关" Then 
                 If 当前关卡 <= 闯关转力战 Then 
@@ -747,46 +731,40 @@ Function 闯关
                 End If
             End If
             
-            // 试图跳过战斗
             If not is_fast_fighting_enabled Then 
-                TracePrint "试图跳过战斗"
+            	// 试图跳过战斗
                 skip_fighting 
             End If
+            
+            Goto LoopEntry
         End If
         
         // 战斗结果界面
         If in_fighting_result_ui() Then 
-            ReleaseCapture 
             当前关卡 = 当前关卡 + 1
             WriteConfig "当前关卡", 当前关卡
             TracePrint "~~~~~~~~关卡数加1，变为：" & 当前关卡
+            // 点击战斗结果界面的继续按钮
             Tap 79, 1138
-            TracePrint "点击了战斗结果界面的继续按钮"
-            waiting_for_fighting_result_ui_dismiss()
-            // 战斗结果界面逻辑完毕
+            Goto LoopEntry
         End If
         
         // 属性选择界面
         If in_attribute_option_ui() Then 
-            ReleaseCapture
             attribute_adjustment 
+            Goto LoopEntry
         End If
         
         // 奖励领取界面
         If in_bonus_ui() Then 
-            ReleaseCapture
             Tap 181, 957
             TracePrint "点击了领取按钮"
-            Delay 200
+            Goto LoopEntry
         End If
         
         If 败北() Then 
-            KeyPress "Power"
-            Delay 1000
-            Exit Function
+            exit_and_screen_off()
         End If
-        
-        ReleaseCapture
     Loop
 	
 End Function
