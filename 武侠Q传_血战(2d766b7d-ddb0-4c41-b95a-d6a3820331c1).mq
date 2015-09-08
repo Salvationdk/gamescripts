@@ -333,22 +333,6 @@ Function init_config
     If Int(ReadUIConfig("魔教模式")) = 1 Then 
         当前模式 = "存星"
     End If
-	
-    TracePrint "界面读取当前气血：" & 当前气血
-    TracePrint "界面读取当前武力：" & 当前武力
-    TracePrint "界面读取当前防御：" & 当前防御
-    TracePrint "界面读取当前内力：" & 当前内力
-    TracePrint "界面读取当前身法：" & 当前身法
-    TracePrint "界面读取最大气血：" & 最大气血
-    TracePrint "界面读取最大武力：" & 最大武力
-    TracePrint "界面读取最大防御：" & 最大防御
-    TracePrint "界面读取最大内力：" & 最大内力
-    TracePrint "界面读取最大身法：" & 最大身法
-    
-    TracePrint "界面读取闯关转力战：" & 闯关转力战
-    TracePrint "界面读取闯关转奋战：" & 闯关转奋战
-    TracePrint "界面读取存星转力战：" & 存星转力战
-    TracePrint "界面读取存星转奋战：" & 存星转奋战
 End Function
 
 Function read_config
@@ -358,12 +342,6 @@ Function read_config
     当前内力 = Int(ReadConfig("当前内力"))
     当前身法 = Int(ReadConfig("当前身法"))
     当前关卡 = Int(ReadConfig("当前关卡"))
-    
-    TracePrint "配置读取当前气血：" & 当前气血
-    TracePrint "配置读取当前武力：" & 当前武力
-    TracePrint "配置读取当前防御：" & 当前防御
-    TracePrint "配置读取当前内力：" & 当前内力
-    TracePrint "配置读取当前身法：" & 当前身法
 End Function
 
 Function fill_attr_type(attr, based_attr_color)
