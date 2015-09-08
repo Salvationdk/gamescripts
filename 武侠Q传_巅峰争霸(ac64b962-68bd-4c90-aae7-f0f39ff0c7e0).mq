@@ -81,7 +81,7 @@ Function DF_寻找继续战斗按钮()
         // 寻找继续按钮
         FindMultiColor 101,1152,215,1329,"9CD7DE","-33|-2|83D7EF,-37|18|637521,13|79|737552,24|124|42AAB5,-43|13|7BDBEF",0,0.9,intX1,intY1
     End If
-    DF_寻找继续战斗按钮 = (intX1>-1 And int1Y>-1)
+    DF_寻找继续战斗按钮 = (intX1>-1 And intY1>-1)
 End Function
 
 Function DF_点击继续战斗按钮()

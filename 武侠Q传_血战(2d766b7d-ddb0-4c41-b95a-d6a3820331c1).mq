@@ -81,7 +81,7 @@ Function DF_寻找继续战斗按钮()
         // 寻找继续按钮
         FindMultiColor 101,1152,215,1329,"9CD7DE","-33|-2|83D7EF,-37|18|637521,13|79|737552,24|124|42AAB5,-43|13|7BDBEF",0,0.9,intX1,intY1
     End If
-    DF_寻找继续战斗按钮 = (intX1>-1 And int1Y>-1)
+    DF_寻找继续战斗按钮 = (intX1>-1 And intY1>-1)
 End Function
 
 Function DF_点击继续战斗按钮()
@@ -478,20 +478,13 @@ Function attribute_adjustment
 End Function
 
 Function in_fighting_mode_option_ui
-    Dim intX, intY, x, y
-    
+    Dim intX, intY, x = -1, y = -1
     FindMultiColor 224,1314,300,1385,"CED2D6","-10|25|CECAB5,5|30|3945CE,36|-1|5261AD",0,0.9,intX,intY
     If intX > -1 And intY > -1 Then 
         // TracePrint "找到了奋战中的站字"
         FindMultiColor 846,1569,912,1629,"ADE2EF","-24|10|738621,-11|21|9CDBEF,-36|22|73D3EF,-22|29|636921",0,0.9,x,y
-        If x>-1 And y>-1 Then 
-            // TracePrint "找到了排行中的行字"
-            TracePrint "&发现当前在战斗模式选择界面"
-            in_fighting_mode_option_ui = True
-            Exit Function
-        End If
     End If
-    in_fighting_mode_option_ui = False
+    in_fighting_mode_option_ui = (x>-1 And y>-1)
 End Function
 
 Function in_attribute_option_ui
@@ -521,41 +514,23 @@ Function in_attribute_option_ui
 End Function
 
 Function in_bonus_ui
-    Dim intX, intY, x, y
-	
+    Dim intX, intY, x = -1, y = -1
     FindMultiColor 555,1028,648,1112,"19187B","-28|-17|3196FF,19|-27|10187B,-23|-48|4AAAFF,-46|-38|19187B",0,0.9,intX,intY
     If intX>-1 And intY>-1 Then 
         // TracePrint "找到了奖励领取界面的得字"
         FindMultiColor 150,951,221,1054,"B5E3F7","-31|25|7CDBF7,-36|12|738A19,7|16|949A52,-29|-15|84DBEF,-19|27|738119",0,0.9,x,y
-        If x>-1 And y>-1 Then 
-            TracePrint "&发现当前在奖励领取界面"
-            in_bonus_ui = True
-            Exit Function
-        End If
     End If
-    
-    in_bonus_ui = False
+    in_bonus_ui = (x>-1 And y>-1)
 End Function
 
 Function in_fighting_result_ui
-    Dim intX, intY, x, y
-    
+    Dim intX, intY, x = -2, y = -2
     FindMultiColor 985,837,1047,908,"523D19","21|0|B5DFF7,0|9|83D2E6,1|14|524019,-8|36|73CAE6,1|35|4A3D19",0,0.9,intX,intY
     If intX>-1 And intY>-1 Then 
         // TracePrint "找到了战斗报告中的战字"
         FindMultiColor 528,1123,595,1163,"5BD2F7","-24|-3|319EFF,3|-10|0000E6,-8|9|0000EF",0,0.9,x,y
-        If x > -1 And y > -1 Then 
-            TracePrint "&发现当前在战斗结果界面"
-            in_fighting_result_ui = True
-            Exit Function
-        End If
     End If
-
-    in_fighting_result_ui = False
-End Function
-
-Function 存星
-	
+    in_fighting_result_ui = (x>-1 And y>-1)
 End Function
 
 Function 血战
@@ -635,32 +610,18 @@ End Function
 
 Function fast_fighting_enabled
     Dim intX, intY
-	
-    FindColor 65,1562,154,1645,"319A21",0,0.9,intX,intY
-    If intX>-1 And intY>-1 Then 
-        TracePrint "当前为快速模式"
-        fast_fighting_enabled = True
-    Else 
-        fast_fighting_enabled = False
-    End If
+    FindColor 65, 1562, 154, 1645, "319A21", 0, 0.9, intX, intY
+    fast_fighting_enabled = (intX>-1 And intY>-1)
 End Function
 
 Function 败北
-    Dim intX, intY
-	
+    Dim intX, intY, a = -1, b = -1	
     FindMultiColor 761,402,957,544,"E6E7E6","-42|-12|DEDFDE,-38|-39|DEDBDE,-92|-37|BDBABD,-94|-13|BDBABD,-44|36|DEDFDE,-23|67|DEDFDE,-97|32|B5B6B5,21|6|9CAEB5,-54|72|7B8183",0,0.9,intX,intY
     If intX > -1 And intY > -1 Then 
-        FindMultiColor 40,1142,133,1197,"B5E6F7","8|-11|738119,-38|2|7B8A29,-25|-2|84D7EF,-35|12|7BDAEE,-17|18|6B7119",0,0.9,intX,intY
-        If intX > -1 And intY > -1 Then 
-            TracePrint "败北了"
-            败北 = True
-            Exit Function
-        End If
+        FindMultiColor 40,1142,133,1197,"B5E6F7","8|-11|738119,-38|2|7B8A29,-25|-2|84D7EF,-35|12|7BDAEE,-17|18|6B7119",0,0.9,a,b
     End If
-    
-    败北 = False
+    败北 = (a>-1 And b>-1)
 End Function
-
 
 Dim 最大气血 = 9999
 Dim 最大武力 = 9999
@@ -699,6 +660,30 @@ Function exit_and_screen_off()
 	KeyPress "Power"
 	Delay 1000
 	EndScript
+End Function
+
+Function 寻找气血属性按钮
+	
+End Function
+
+Function 寻找武力属性按钮
+	
+End Function
+
+Function 寻找防御属性按钮
+	
+End Function
+
+Function 寻找内力属性按钮
+	
+End Function
+
+Function 寻找身法属性按钮
+	
+End Function
+
+Function 寻找不可用属性按钮
+	
 End Function
 
 Function 闯关
