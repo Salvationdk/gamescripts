@@ -1,225 +1,158 @@
 //===================================================================
 // 巅峰争霸开始^
 //===================================================================
-Function DF_findDianFengButton()
+Function DF_寻找巅峰按钮()
     Dim intX, intY
-
     FindMultiColor 662,34,810,184,"0886F7","20|97|001484,65|46|C5FFF7,-37|42|6B8184,1|39|0010DE,7|64|108AFF,38|72|19BEFF,-49|42|0051D6",0,0.9,intX,intY
-    If intX>-1 And intY>-1 Then 
-        DF_findDianFengButton = True
-        TracePrint "找到了巅峰按钮"
-        Exit Function
-    End If
-    
-    TracePrint "没找到巅峰按钮"
-    DF_findDianFengButton = False
+    DF_寻找巅峰按钮 = (intX>-1 And intY>-1)
 End Function
 
-Function DF_clickDianFengButton()
-    // click DianFeng button
+Function DF_点击巅峰按钮()
     Tap 735, 112
-    TracePrint "点击了巅峰按钮"
 End Function
 
-Function DF_findCanSaiButton()
+Function DF_寻找参赛按钮()
     Dim intX, intY
-    
     FindMultiColor 14,1433,404,1736,"294DD6","193|8|8C3500,2|-138|315184,1|142|5AA9CD,-88|6|5261BD,-139|1|5289A4",0,0.9,intX,intY
-    If intX>-1 And intY>-1 Then 
-        TracePrint "找到了参赛按钮"
-        DF_findCanSaiButton = True
-        Exit Function
-    End If
-    
-    TracePrint "没找到参赛按钮"
-    DF_findCanSaiButton = False
+    DF_寻找参赛按钮 = (intX>-1 And intY>-1)
 End Function
 
-Function DF_clickCanSaiButton()
+Function DF_点击参赛按钮()
     Tap 179, 1579
-    TracePrint "点击了参赛按钮"
 End Function
 
-Function DF_findStartFightingButton()
+Function DF_寻找开始战斗按钮()
     Dim intX, intY
-	
     FindMultiColor 9,700,235,933,"BDDFEF","-45|31|A49A21,-87|-9|8CDBEF,-71|60|94E7F7,-46|129|093984,-47|-54|423910,-152|30|5299B5",0,0.9,intX,intY
-    If intX > -1 And intY > -1 Then 
-        TracePrint "找到了开始战斗按钮"
-        DF_findStartFightingButton = True
-        Exit Function
-    End If
-    
-    TracePrint "没找到开始战斗按钮"
-    DF_findStartFightingButton = False
+    DF_寻找开始战斗按钮 = (intX>-1 And intY>-1)
 End Function
 
-Function DF_clickStartFightingButton()
+Function DF_点击开始战斗按钮()
     Tap 121, 819
-    TracePrint "点击了开始战斗按钮"
 End Function
 
-Function DF_findSkiapableButton()
+Function DF_寻找跳过按钮()
     Dim intX, intY
-	
-    FindMultiColor 9,700,235,933,"A5DFF7","-29|-3|73D2EF,-29|44|7BD2EF,-44|21|7B8D21,-3|77|ADDFEF,-33|89|73D6EF,-19|159|525D19,24|184|4AA6BD",0,0.9,intX,intY
-    If intX>-1 And intY>-1 Then 
-        TracePrint "找到了跳过按钮"
-        DF_findSkiapableButton = True
-        Exit Function
-    End If
-    
-    DF_findSkiapableButton = False
+    FindMultiColor 9,700,235,933,"A5DFF7","-29|-3|73D2EF,-29|44|7BD2EF,-44|21|7B8D21,-3|77|ADDFEF,-33|89|73D6EF,-19|159|525D19,24|184|4AA6BD",0,0.9,intX,intY    
+    DF_寻找跳过按钮 = (intX>-1 And intY>-1)
 End Function
 
-Function DF_findDisabledSkipableButton()
+Function DF_寻找灰色跳过按钮()
     Dim intX, intY
-	
     FindMultiColor 9,700,235,933,"B5DFFF","-30|-3|73D2EF,-34|89|73D6EF,-3|77|B5E2FF,-17|163|5A555A,23|186|A5A6A5,15|-60|636563,-48|-87|292C29",0,0.9,intX,intY
-    If intX>-1 And intY>-1 Then 
-        TracePrint "找到了灰色跳过按钮"
-        DF_findDisabledSkipableButton = True
-        Exit Function
-    End If
-    
-    DF_findDisabledSkipableButton = False
+    DF_寻找灰色跳过按钮 = (intX>-1 And intY>-1)
 End Function
 
-Function DF_findHuoDongGongGaoPage()
+Function DF_寻找活动公告页面()
     Dim intX, intY
-    
     FindMultiColor 887,149,1073,218,"9CEEF7","-19|20|8CE2EF,9|16|6BBEE6,-1|34|5A96DE,-57|32|427DE6,-104|32|9CF3F7,-55|15|DEF3FF,-54|7|BDD7EF",0,0.9,intX,intY
-    If intX>-1 And intY>-1 Then 
-        TracePrint "发现活动公告页面"
-        DF_findHuoDongGongGaoPage = True
-        Exit Function
-    End If
-    
-    DF_findHuoDongGongGaoPage = False
+    DF_寻找活动公告页面 = (intX>-1 And intY>-1)
 End Function
 
-Function DF_tapToTestSkipable()
-    DF_tapSkipFighting()
+Function DF_通过点击尝试跳过()
+    Tap 88, 959
     Delay 100
 End Function
 
-Function DF_tapSkipFighting()
+Function DF_点击跳过按钮()
     Tap 88, 959
-    TracePrint "点击跳过按钮"
 End Function
 
-Function DF_noMoreFreeFightingChance()
-    Dim intX, intY, intX1, intY1
-    
+Function DF_战斗次数已用完()
+    Dim intX, intY, intX1 = -2, intY1 = -2
     FindMultiColor 293,1102,383,1298,"8C964A","-28|-4|A4DBF7,-44|-4|84D7EF,-44|16|738A21,-47|25|84DAEE,-27|51|ADDBF7,-47|54|6B7D21",0,0.9,intX,intY
     If intX > -1 And intY > -1 Then 
         TracePrint "找到了蓝色夜叉剑"
+        // 寻找蓝色确定按钮
         FindMultiColor 832,1221,957,1365,"7C6110","-27|-26|7B7931,-32|23|10454A,29|35|7C6D10,-46|-44|106162,10|43|6B615A,13|57|3A717C,8|-40|6B655B",0,0.9,intX1,intY1
-        If intX1 > -1 And intY1 > -1 Then 
-            TracePrint "找到了蓝色确定按钮"
-            TracePrint "巅峰次数已经用完"
-            DF_noMoreFreeFightingChance = True
-            Exit Function
-        End If
     End If
-    
-    DF_noMoreFreeFightingChance = False
+    DF_战斗次数已用完 = (intX1>-1 And intY1>-1)
 End Function
 
-Function DF_closeHuoDongGongGaoPage()
-    TracePrint "关闭活动公告页面"
+Function DF_关闭活动公告页面()
     Tap 1026,1715
 End Function
 
-Function DF_findContinueFightingButton()
-    Dim intX, intY, intX1, intY1
+Function DF_寻找继续战斗按钮()
+    Dim intX, intY, intX1 = -2, intY1 = -2
     FindMultiColor 730,914,817,1014,"003DE6","-30|19|100CAD,5|67|005DE6,-5|46|0018CE,-35|42|1118A5,-21|35|000000,22|33|000000,12|25|9CE7EF",0,0.9,intX,intY
     If intX>-1 And intY>-1 Then 
         TracePrint "找到了VS图标"
-        FindMultiColor 101,1152,215,1329,"9CD7DE","-33|-2|83D7EF,-37|18|637521,13|79|737552,24|124|42AAB5,-43|13|7BDBEF",0,0.9,intX,intY
-        If intX > -1 And intY > -1 Then 
-            TracePrint "找到了继续按钮"
-            DF_findContinueFightingButton = True
-            Exit Function
-        End If
+        // 寻找继续按钮
+        FindMultiColor 101,1152,215,1329,"9CD7DE","-33|-2|83D7EF,-37|18|637521,13|79|737552,24|124|42AAB5,-43|13|7BDBEF",0,0.9,intX1,intY1
     End If
-    
-    DF_findContinueFightingButton = False
+    DF_寻找继续战斗按钮 = (intX1>-1 And int1Y>-1)
 End Function
 
-Function DF_tapContinueFighting()
+Function DF_点击继续战斗按钮()
     Tap 152, 1152
-    TracePrint "点击了继续战斗按钮"
 End Function
 
-Function DF_noMoreDianFengLingPai()
-    Dim intX, intY, intX1, intY1
-	
+Function DF_没有巅峰令牌()
+    Dim intX, intY, intX1 = -2, intY1 = -2
     FindMultiColor 304,1161,383,1278,"948E52","-9|-2|ADDBEF,-50|-22|738E21,-54|1|8BC9E4,-58|10|7CD6EE,-57|21|6B8119,-11|51|9CC6CE,-55|74|84DBEF,-44|67|4A4D19",0,0.9,intX,intY
     If intX>-1 And intY>-1 Then 
         TracePrint "找到了前往商城按钮"
+        // 寻找蓝色夜叉剑
         FindMultiColor 841,1227,955,1364,"7C5D08","3|59|7C6D08,-2|26|212019,-52|0|737129,-55|49|11414A,-51|56|838152,-26|55|312D29,-34|83|5A4D41,-12|84|316D7C",0,0.9,intX1,intY1
-        If intX1>-1 And intY1>-1 Then 
-            TracePrint "找到了蓝色夜叉剑"
-            TracePrint "发现没有巅峰令牌了"
-            DF_noMoreDianFengLingPai = True
-            Exit Function
-        End If
     End If
-    
-    DF_noMoreDianFengLingPai = False
+    DF_没有巅峰令牌 = (intX1>-1 And intY1>-1)
 End Function
 
-Function DF_fighting()
-    Dim trySkipCount = 0
-    Dim foundSkipableButton = False
-    Dim foundContinueFightingButton = False
-    Dim foundDisabledSkipableButton = False
+Function DF_巅峰战斗ING()
+    Dim 尝试跳过次数 = 0
+    Dim 找到了跳过按钮 = False
+    Dim 找到了继续战斗按钮 = False
+    Dim 找到了灰色的跳过按钮 = False
 	
     Do
-        If DF_noMoreDianFengLingPai() Then 
+        If DF_没有巅峰令牌() Then 
+            KeyPress "Power"
+            Delay 1000 
             EndScript
         End If
     	
-        If DF_noMoreFreeFightingChance() Then 
+        If DF_战斗次数已用完() Then 
+            KeyPress "Power"
+            Delay 1000
             EndScript
         End If
     	
-        DF_tapToTestSkipable 
-        trySkipCount = trySkipCount + 1
-        If trySkipCount > 20 Then 
+        DF_通过点击尝试跳过 
+        尝试跳过次数 = 尝试跳过次数 + 1
+        If 尝试跳过次数 > 20 Then 
             TracePrint "尝试20仍未能掉过战斗"
             Exit Do
         End If
         
         Delay 1000
         KeepCapture 
-        foundSkipableButton = DF_findSkiapableButton()
-        foundContinueFightingButton = DF_findContinueFightingButton()
-        foundDisabledSkipableButton = DF_findDisabledSkipableButton()
+        找到了跳过按钮 = DF_寻找跳过按钮()
+        找到了继续战斗按钮 = DF_寻找继续战斗按钮()
+        找到了灰色的跳过按钮 = DF_寻找灰色跳过按钮()
         ReleaseCapture 
         
-        If foundDisabledSkipableButton Then 
+        If 找到了灰色的跳过按钮 Then 
             Do
                 Delay 1000
                 KeepCapture
-                foundSkipableButton = DF_findSkiapableButton()
-                foundContinueFightingButton = DF_findContinueFightingButton()
+                找到了跳过按钮 = DF_寻找跳过按钮()
+                找到了继续战斗按钮 = DF_寻找继续战斗按钮()
                 ReleaseCapture
-            Loop Until (foundSkipableButton or foundContinueFightingButton)
+            Loop Until (找到了跳过按钮 or 找到了继续战斗按钮)
         End If
 		
-        If foundContinueFightingButton Then 
-            DF_tapContinueFighting()
+        If 找到了继续战斗按钮 Then 
+            DF_点击继续战斗按钮()
         End If
 		
-        If foundSkipableButton Then 
-            DF_tapSkipFighting()
+        If 找到了跳过按钮 Then 
+            DF_点击跳过按钮()
         End If
-    Loop Until foundContinueFightingButton
+    Loop Until 找到了继续战斗按钮
 End Function
 
-Function DF_fightingMain
+Function DF_巅峰战斗主循环
     Dim DF_captureReleased = True
 	
     Do
@@ -228,41 +161,43 @@ Function DF_fightingMain
         //To identify the current UI
         DF_captureReleased = False
     
-        If DF_noMoreFreeFightingChance() Then 
+        If DF_战斗次数已用完() Then 
+            KeyPress "Power"
+            Delay 1000
             Exit Do
         End If
     
-        If DF_noMoreDianFengLingPai() Then 
+        If DF_没有巅峰令牌() Then 
             KeyPress "Power"
             Delay 1000
             EndScript
         End If
     
-        If DF_findStartFightingButton() Then 
+        If DF_寻找开始战斗按钮() Then 
             ReleaseCapture 
             DF_captureReleased = True
-            DF_clickStartFightingButton()
+            DF_点击开始战斗按钮()
             Delay 3000
-            DF_fighting()
+            DF_巅峰战斗ING()
         End If
     
-        If DF_findCanSaiButton() Then 
-            DF_clickCanSaiButton()
+        If DF_寻找参赛按钮() Then 
+            DF_点击参赛按钮()
             Delay 100
         End If
     
-        If DF_findDianFengButton() Then 
-            DF_clickDianFengButton()
+        If DF_寻找巅峰按钮() Then 
+            DF_点击巅峰按钮()
             Delay 600
         End If
 			
-        If DF_findHuoDongGongGaoPage() Then 
-            DF_closeHuoDongGongGaoPage() 
+        If DF_寻找活动公告页面() Then 
+            DF_关闭活动公告页面() 
             Delay 100
         End If
     
-        If DF_findContinueFightingButton() Then 
-            DF_tapContinueFighting 
+        If DF_寻找继续战斗按钮() Then 
+            DF_点击继续战斗按钮 
             Delay 100
         End If
     
@@ -888,6 +823,6 @@ Select Case 辅助模式
 Case 0
     闯关 
 Case 1
-    DF_fightingMain
+    DF_巅峰战斗主循环
 End Select
 ResetScreenScale 
