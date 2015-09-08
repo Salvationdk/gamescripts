@@ -1,0 +1,893 @@
+//===================================================================
+// 巅峰争霸开始^
+//===================================================================
+Function DF_findDianFengButton()
+    Dim intX, intY
+
+    FindMultiColor 662,34,810,184,"0886F7","20|97|001484,65|46|C5FFF7,-37|42|6B8184,1|39|0010DE,7|64|108AFF,38|72|19BEFF,-49|42|0051D6",0,0.9,intX,intY
+    If intX>-1 And intY>-1 Then 
+        DF_findDianFengButton = True
+        TracePrint "找到了巅峰按钮"
+        Exit Function
+    End If
+    
+    TracePrint "没找到巅峰按钮"
+    DF_findDianFengButton = False
+End Function
+
+Function DF_clickDianFengButton()
+    // click DianFeng button
+    Tap 735, 112
+    TracePrint "点击了巅峰按钮"
+End Function
+
+Function DF_findCanSaiButton()
+    Dim intX, intY
+    
+    FindMultiColor 14,1433,404,1736,"294DD6","193|8|8C3500,2|-138|315184,1|142|5AA9CD,-88|6|5261BD,-139|1|5289A4",0,0.9,intX,intY
+    If intX>-1 And intY>-1 Then 
+        TracePrint "找到了参赛按钮"
+        DF_findCanSaiButton = True
+        Exit Function
+    End If
+    
+    TracePrint "没找到参赛按钮"
+    DF_findCanSaiButton = False
+End Function
+
+Function DF_clickCanSaiButton()
+    Tap 179, 1579
+    TracePrint "点击了参赛按钮"
+End Function
+
+Function DF_findStartFightingButton()
+    Dim intX, intY
+	
+    FindMultiColor 9,700,235,933,"BDDFEF","-45|31|A49A21,-87|-9|8CDBEF,-71|60|94E7F7,-46|129|093984,-47|-54|423910,-152|30|5299B5",0,0.9,intX,intY
+    If intX > -1 And intY > -1 Then 
+        TracePrint "找到了开始战斗按钮"
+        DF_findStartFightingButton = True
+        Exit Function
+    End If
+    
+    TracePrint "没找到开始战斗按钮"
+    DF_findStartFightingButton = False
+End Function
+
+Function DF_clickStartFightingButton()
+    Tap 121, 819
+    TracePrint "点击了开始战斗按钮"
+End Function
+
+Function DF_findSkiapableButton()
+    Dim intX, intY
+	
+    FindMultiColor 9,700,235,933,"A5DFF7","-29|-3|73D2EF,-29|44|7BD2EF,-44|21|7B8D21,-3|77|ADDFEF,-33|89|73D6EF,-19|159|525D19,24|184|4AA6BD",0,0.9,intX,intY
+    If intX>-1 And intY>-1 Then 
+        TracePrint "找到了跳过按钮"
+        DF_findSkiapableButton = True
+        Exit Function
+    End If
+    
+    DF_findSkiapableButton = False
+End Function
+
+Function DF_findDisabledSkipableButton()
+    Dim intX, intY
+	
+    FindMultiColor 9,700,235,933,"B5DFFF","-30|-3|73D2EF,-34|89|73D6EF,-3|77|B5E2FF,-17|163|5A555A,23|186|A5A6A5,15|-60|636563,-48|-87|292C29",0,0.9,intX,intY
+    If intX>-1 And intY>-1 Then 
+        TracePrint "找到了灰色跳过按钮"
+        DF_findDisabledSkipableButton = True
+        Exit Function
+    End If
+    
+    DF_findDisabledSkipableButton = False
+End Function
+
+Function DF_findHuoDongGongGaoPage()
+    Dim intX, intY
+    
+    FindMultiColor 887,149,1073,218,"9CEEF7","-19|20|8CE2EF,9|16|6BBEE6,-1|34|5A96DE,-57|32|427DE6,-104|32|9CF3F7,-55|15|DEF3FF,-54|7|BDD7EF",0,0.9,intX,intY
+    If intX>-1 And intY>-1 Then 
+        TracePrint "发现活动公告页面"
+        DF_findHuoDongGongGaoPage = True
+        Exit Function
+    End If
+    
+    DF_findHuoDongGongGaoPage = False
+End Function
+
+Function DF_tapToTestSkipable()
+    DF_tapSkipFighting()
+    Delay 100
+End Function
+
+Function DF_tapSkipFighting()
+    Tap 88, 959
+    TracePrint "点击跳过按钮"
+End Function
+
+Function DF_noMoreFreeFightingChance()
+    Dim intX, intY, intX1, intY1
+    
+    FindMultiColor 293,1102,383,1298,"8C964A","-28|-4|A4DBF7,-44|-4|84D7EF,-44|16|738A21,-47|25|84DAEE,-27|51|ADDBF7,-47|54|6B7D21",0,0.9,intX,intY
+    If intX > -1 And intY > -1 Then 
+        TracePrint "找到了蓝色夜叉剑"
+        FindMultiColor 832,1221,957,1365,"7C6110","-27|-26|7B7931,-32|23|10454A,29|35|7C6D10,-46|-44|106162,10|43|6B615A,13|57|3A717C,8|-40|6B655B",0,0.9,intX1,intY1
+        If intX1 > -1 And intY1 > -1 Then 
+            TracePrint "找到了蓝色确定按钮"
+            TracePrint "巅峰次数已经用完"
+            DF_noMoreFreeFightingChance = True
+            Exit Function
+        End If
+    End If
+    
+    DF_noMoreFreeFightingChance = False
+End Function
+
+Function DF_closeHuoDongGongGaoPage()
+    TracePrint "关闭活动公告页面"
+    Tap 1026,1715
+End Function
+
+Function DF_findContinueFightingButton()
+    Dim intX, intY, intX1, intY1
+    FindMultiColor 730,914,817,1014,"003DE6","-30|19|100CAD,5|67|005DE6,-5|46|0018CE,-35|42|1118A5,-21|35|000000,22|33|000000,12|25|9CE7EF",0,0.9,intX,intY
+    If intX>-1 And intY>-1 Then 
+        TracePrint "找到了VS图标"
+        FindMultiColor 101,1152,215,1329,"9CD7DE","-33|-2|83D7EF,-37|18|637521,13|79|737552,24|124|42AAB5,-43|13|7BDBEF",0,0.9,intX,intY
+        If intX > -1 And intY > -1 Then 
+            TracePrint "找到了继续按钮"
+            DF_findContinueFightingButton = True
+            Exit Function
+        End If
+    End If
+    
+    DF_findContinueFightingButton = False
+End Function
+
+Function DF_tapContinueFighting()
+    Tap 152, 1152
+    TracePrint "点击了继续战斗按钮"
+End Function
+
+Function DF_noMoreDianFengLingPai()
+    Dim intX, intY, intX1, intY1
+	
+    FindMultiColor 304,1161,383,1278,"948E52","-9|-2|ADDBEF,-50|-22|738E21,-54|1|8BC9E4,-58|10|7CD6EE,-57|21|6B8119,-11|51|9CC6CE,-55|74|84DBEF,-44|67|4A4D19",0,0.9,intX,intY
+    If intX>-1 And intY>-1 Then 
+        TracePrint "找到了前往商城按钮"
+        FindMultiColor 841,1227,955,1364,"7C5D08","3|59|7C6D08,-2|26|212019,-52|0|737129,-55|49|11414A,-51|56|838152,-26|55|312D29,-34|83|5A4D41,-12|84|316D7C",0,0.9,intX1,intY1
+        If intX1>-1 And intY1>-1 Then 
+            TracePrint "找到了蓝色夜叉剑"
+            TracePrint "发现没有巅峰令牌了"
+            DF_noMoreDianFengLingPai = True
+            Exit Function
+        End If
+    End If
+    
+    DF_noMoreDianFengLingPai = False
+End Function
+
+Function DF_fighting()
+    Dim trySkipCount = 0
+    Dim foundSkipableButton = False
+    Dim foundContinueFightingButton = False
+    Dim foundDisabledSkipableButton = False
+	
+    Do
+        If DF_noMoreDianFengLingPai() Then 
+            EndScript
+        End If
+    	
+        If DF_noMoreFreeFightingChance() Then 
+            EndScript
+        End If
+    	
+        DF_tapToTestSkipable 
+        trySkipCount = trySkipCount + 1
+        If trySkipCount > 20 Then 
+            TracePrint "尝试20仍未能掉过战斗"
+            Exit Do
+        End If
+        
+        Delay 1000
+        KeepCapture 
+        foundSkipableButton = DF_findSkiapableButton()
+        foundContinueFightingButton = DF_findContinueFightingButton()
+        foundDisabledSkipableButton = DF_findDisabledSkipableButton()
+        ReleaseCapture 
+        
+        If foundDisabledSkipableButton Then 
+            Do
+                Delay 1000
+                KeepCapture
+                foundSkipableButton = DF_findSkiapableButton()
+                foundContinueFightingButton = DF_findContinueFightingButton()
+                ReleaseCapture
+            Loop Until (foundSkipableButton or foundContinueFightingButton)
+        End If
+		
+        If foundContinueFightingButton Then 
+            DF_tapContinueFighting()
+        End If
+		
+        If foundSkipableButton Then 
+            DF_tapSkipFighting()
+        End If
+    Loop Until foundContinueFightingButton
+End Function
+
+Function DF_fightingMain
+    Dim DF_captureReleased = True
+	
+    Do
+        KeepCapture 
+    
+        //To identify the current UI
+        DF_captureReleased = False
+    
+        If DF_noMoreFreeFightingChance() Then 
+            Exit Do
+        End If
+    
+        If DF_noMoreDianFengLingPai() Then 
+            KeyPress "Power"
+            Delay 1000
+            EndScript
+        End If
+    
+        If DF_findStartFightingButton() Then 
+            ReleaseCapture 
+            DF_captureReleased = True
+            DF_clickStartFightingButton()
+            Delay 3000
+            DF_fighting()
+        End If
+    
+        If DF_findCanSaiButton() Then 
+            DF_clickCanSaiButton()
+            Delay 100
+        End If
+    
+        If DF_findDianFengButton() Then 
+            DF_clickDianFengButton()
+            Delay 600
+        End If
+			
+        If DF_findHuoDongGongGaoPage() Then 
+            DF_closeHuoDongGongGaoPage() 
+            Delay 100
+        End If
+    
+        If DF_findContinueFightingButton() Then 
+            DF_tapContinueFighting 
+            Delay 100
+        End If
+    
+        If not DF_captureReleased Then 
+            ReleaseCapture
+        End If
+    
+        Delay 1000
+    Loop
+End Function
+//===================================================================
+// 巅峰争霸结束$
+//===================================================================
+
+
+//===================================================================
+// 血战开始^
+//===================================================================
+Function find_qi_yu_btn
+    Dim intX, intY
+	
+    FindMultiColor 691,1757,840,1905,"EFEF8C","-46|-18|CEFFFF,-54|2|ADEFFF,-65|15|3A96FF,-31|46|849621,-15|-47|A4FBFF,-35|-35|848629",0,0.9,intX,intY
+    If intX > -1 And intY > -1 Then 
+        find_qi_yu_btn = True
+        TracePrint "找到了奇遇按钮"
+    Else 
+        find_qi_yu_btn = False
+    End If
+    
+End Function
+
+Function find_yin_yuan_bao
+    Dim intX, intY
+    
+    FindMultiColor 969,250,1065,315,"DEDBCE","0|-21|FFF7FF,-17|-21|CEBEBD,-16|-5|9C8E84,15|-19|312408,-33|-20|312800,4|-36|D6CAC6,-13|-4|9C9294",0,0.9,intX,intY
+    If intX > -1 And intY > -1 Then 
+        TracePrint "找到了银元宝"
+        find_yin_yuan_bao = True
+    Else 
+        find_yin_yuan_bao = False
+    End If
+    
+End Function
+
+Function find_jin_yuan_bao
+    Dim intX, intY
+	
+    FindMultiColor 983,1409,1044,1470,"EFFFFF","4|7|00C2F7,-10|1|BDFBFF,-13|-10|00AAFF,-20|3|009AF7,-13|17|0889C6,12|2|423410,-31|3|422D10",0,0.9,intX,intY
+    If intX>-1 And intY>-1 Then 
+        find_jin_yuan_bao = True
+        TracePrint "找到了金元宝"
+    Else 
+        find_jin_yuan_bao = False
+    End If
+
+End Function
+
+Function in_qi_yu_page
+    Dim result
+    
+    result = (find_jin_yuan_bao() and find_yin_yuan_bao())
+    If result Then 
+        TracePrint "目前在奇遇界面"
+    End If
+	
+    in_qi_yu_page = result
+End Function
+
+Function find_mo_jiao_zong_tan_icon
+    Dim intX, intY, point()
+	
+    FindMultiColor 25,155,295,1761,"CE35AD","-36|-17|19CFFF,-45|24|0045DE,-63|-42|0071EF,-83|-6|DEDBFF,-97|29|DEDFFF,-107|-14|DEDBFF,-123|8|DEDBFF,-79|19|292C29",0,0.9,intX,intY
+    If intX > -1 And intY > -1 Then 
+        point(0) = intX
+        point(1) = intY
+        find_mo_jiao_zong_tan_icon = point
+        TracePrint intX, intY
+        TracePrint "找到了魔教总坛图标"
+    End If
+End Function
+
+Function scroll_until_mo_jiao_zong_tan_icon_found
+    Dim result = find_mo_jiao_zong_tan_icon()
+	
+    If result Then 
+        scroll_until_mo_jiao_zong_tan_icon_found = result
+        Exit Function
+    End If
+	
+    // 将滚动条滚动到最左边
+    For 3
+        Swipe 174, 248, 174, 1751, 200
+    Next
+    Delay 500
+    
+    // 向左滚动直到找到魔教总坛图标为止
+    Do
+        Swipe 153, 395, 153, 195, 200
+        result = find_mo_jiao_zong_tan_icon()
+        If result Then 
+            scroll_until_mo_jiao_zong_tan_icon_found = result
+            Exit Do
+        End If
+    Loop
+	
+End Function
+
+Function init_config
+    Dim read_config_from_file = ReadUIConfig("读取保存属性")
+    If read_config_from_file Then 
+        read_config()
+    Else 
+        当前气血 = Int(ReadUIConfig("当前气血"))
+        当前武力 = Int(ReadUIConfig("当前武力"))
+        当前防御 = Int(ReadUIConfig("当前防御"))
+        当前内力 = Int(ReadUIConfig("当前内力"))
+        当前身法 = Int(ReadUIConfig("当前身法"))
+        当前关卡 = Int(ReadUIConfig("当前关卡"))
+    End If
+	
+    最大气血 = Int(ReadUIConfig("最大气血"))
+    最大武力 = Int(ReadUIConfig("最大武力"))
+    最大防御 = Int(ReadUIConfig("最大防御"))
+    最大内力 = Int(ReadUIConfig("最大内力"))
+    最大身法 = Int(ReadUIConfig("最大身法"))
+	
+    闯关转力战 = Int(ReadUIConfig("闯关转力"))
+    闯关转奋战 = Int(ReadUIConfig("闯关转奋"))
+    存星转力战 = Int(ReadUIConfig("存星转力"))
+    存星转奋战 = Int(ReadUIConfig("存星转奋"))
+    
+    当前模式 = "闯关"
+    If Int(ReadUIConfig("魔教模式")) = 1 Then 
+        当前模式 = "存星"
+    End If
+	
+    TracePrint "界面读取当前气血：" & 当前气血
+    TracePrint "界面读取当前武力：" & 当前武力
+    TracePrint "界面读取当前防御：" & 当前防御
+    TracePrint "界面读取当前内力：" & 当前内力
+    TracePrint "界面读取当前身法：" & 当前身法
+    TracePrint "界面读取最大气血：" & 最大气血
+    TracePrint "界面读取最大武力：" & 最大武力
+    TracePrint "界面读取最大防御：" & 最大防御
+    TracePrint "界面读取最大内力：" & 最大内力
+    TracePrint "界面读取最大身法：" & 最大身法
+    
+    TracePrint "界面读取闯关转力战：" & 闯关转力战
+    TracePrint "界面读取闯关转奋战：" & 闯关转奋战
+    TracePrint "界面读取存星转力战：" & 存星转力战
+    TracePrint "界面读取存星转奋战：" & 存星转奋战
+End Function
+
+Function read_config
+    当前气血 = Int(ReadConfig("当前气血"))
+    当前武力 = Int(ReadConfig("当前武力"))
+    当前防御 = Int(ReadConfig("当前防御"))
+    当前内力 = Int(ReadConfig("当前内力"))
+    当前身法 = Int(ReadConfig("当前身法"))
+    当前关卡 = Int(ReadConfig("当前关卡"))
+    
+    TracePrint "配置读取当前气血：" & 当前气血
+    TracePrint "配置读取当前武力：" & 当前武力
+    TracePrint "配置读取当前防御：" & 当前防御
+    TracePrint "配置读取当前内力：" & 当前内力
+    TracePrint "配置读取当前身法：" & 当前身法
+End Function
+
+Function fill_attr_type(attr, based_attr_color)
+    Dim x = attr(0), y = attr(1), i
+    For i = 0 To 4
+        If CmpColor(x, y, based_attr_color(i), 0.94) > -1 Then 
+            TracePrint "在" & attr(3) & "找到的属性为：" & attr_names(i)
+            attr(2) = i
+            Exit For
+        End If
+    Next
+    
+    If i = 4 And (attr(2) = -1) Then 
+        TracePrint "在" & attr(3) & "处的属性不可用"
+        If attr(3) = 3 Then 
+            TracePrint "发现了异常"
+            EndScript
+        End If
+    End If
+End Function
+
+Function waiting_for_attribute_option_ui_dismiss
+    ReleaseCapture
+    Dim delays = 100
+    Do
+        If in_attribute_option_ui() Then 
+            If delays > 10 Then 
+                Delay delays
+                delays = delays - 1
+            Else 
+                Exit Function
+            End If 
+        Else 
+            Exit Function
+        End If
+    Loop
+End Function
+
+Function add_attr(attr)
+    TracePrint "*当前准备加的" & attr_names(attr(2)) & "值为：" & attr(3)
+    Tap attr(0), attr(1)
+    waiting_for_attribute_option_ui_dismiss
+    当前属性(attr(2)) = 当前属性(attr(2)) + attr(3)
+    WriteConfig "当前" & attr_names(attr(2)), 当前属性(attr(2))
+    
+    TracePrint "--------------------------------------------------------"
+    Dim i
+    For i = 0 To 4
+        TracePrint "当前" & attr_names(i) & "为：" &  当前属性(i)
+    Next
+    TracePrint "--------------------------------------------------------"
+End Function
+
+Function attribute_adjustment
+    // 如果当前为存星模式则直接加3属性
+    // 首先试图加30属性
+    // ......加30属性当且仅当：
+    // ......1）30属性可用（不是灰色不可用按钮）
+    // ......2）30属性优先级最高
+    // ......3) 30属性对应的属性值没有超过设定的最大属性值
+    // 如果不能加30属性则尝试加15属性
+    // ......加15属性当且仅当：
+    // ......1）15属性可用
+    // ......2）15属性对应的属性值没有超过设定的最大属性值
+    // 如果不能加15属性那么别无选择只能加3属性
+	
+    // 三属性(坐标x, 坐标y, 属性类别, 属性值)
+    // 属性类别用[0-4]的数字表示，[0-4]分别代表气血、武力、防御、内力和身法。
+    // -1表示灰色不可用的属性类别
+    Dim 三属性(), 十五属性(), 三十属性()
+    三属性(0) = 574
+    三属性(1) = 565
+    三属性(2) = -1
+    三属性(3) = 3
+	
+    十五属性(0) = 574
+    十五属性(1) = 878
+    十五属性(2) = -1
+    十五属性(3) = 15
+	
+    三十属性(0) = 574
+    三十属性(1) = 1178
+    三十属性(2) = -1
+    三十属性(3) = 30
+    
+    // Ensure capture released
+    ReleaseCapture 
+    KeepCapture 
+    
+    fill_attr_type(三属性, attr_color_03)
+    fill_attr_type(十五属性, attr_color_15)
+    fill_attr_type 三十属性, attr_color_30
+    
+    ReleaseCapture 
+	
+    If 当前模式 = "存星" Then 
+        TracePrint "由于当前模式为存星，直接加3属性"
+        add_attr (三属性)
+    Else 
+        // 贪婪算法
+        // 三十血武可加则加
+        If 0 <= 三十属性(2) <= 1 Then 
+            If 当前属性(三十属性(2)) < 最大属性(三十属性(2)) Then 
+                add_attr (三十属性)
+                Exit Function
+            End If
+        End If
+        
+        // 十五血武可加则加
+        If 0 <= 十五属性(2) <= 1 Then 
+            If 当前属性(十五属性(2)) < 最大属性(十五属性(2)) Then 
+                add_attr (十五属性)
+                Exit Function
+            End If
+        End If
+        
+        // 三十属性可加则加
+        If 三十属性(2) >= 0 Then 
+            If 当前属性(三十属性(2)) < 最大属性(三十属性(2)) Then 
+                add_attr (三十属性)
+                Exit Function
+            End If
+        End If
+        
+        // 十五属性可加则加
+        If 十五属性(2) >= 0 Then 
+            If 当前属性(十五属性(2)) < 最大属性(十五属性(2)) Then  
+                add_attr (十五属性)
+                Exit Function
+            End If
+        End If
+    	
+        // 别无选择，只能加三属性了。
+        add_attr (三属性)
+        Delay 200
+    End If
+	
+End Function
+
+Function in_fighting_mode_option_ui
+    Dim intX, intY, x, y
+    
+    FindMultiColor 224,1314,300,1385,"CED2D6","-10|25|CECAB5,5|30|3945CE,36|-1|5261AD",0,0.9,intX,intY
+    If intX > -1 And intY > -1 Then 
+        // TracePrint "找到了奋战中的站字"
+        FindMultiColor 846,1569,912,1629,"ADE2EF","-24|10|738621,-11|21|9CDBEF,-36|22|73D3EF,-22|29|636921",0,0.9,x,y
+        If x>-1 And y>-1 Then 
+            // TracePrint "找到了排行中的行字"
+            TracePrint "&发现当前在战斗模式选择界面"
+            in_fighting_mode_option_ui = True
+            Exit Function
+        End If
+    End If
+    in_fighting_mode_option_ui = False
+End Function
+
+Function in_attribute_option_ui
+    Dim intX, intY, x, y, p, q
+    FindColor 368,643,404,675,"63CAEF",0,0.9,intX,intY
+    If intX>-1 And intY>-1 Then 
+        FindColor 370,956,404,989,"62C2EF",0,0.9,x,y
+        If x>-1 And y>-1 Then 
+            FindColor 365,1268,404,1303,"52BAEF",0,0.9,p,q
+            If p>-1 And q>-1 Then 
+                // TracePrint "找到了加属性界面三个大圆下的三颗星星"
+                FindMultiColor 834,1147,925,1655,"5A757B","-12|19|4A6D73,-37|19|426D7B,-25|9|424510,-19|-420|9CD2E6",0,0.9,intX,intY
+                If intX > -1 And intY > -1 Then 
+                    // 加强属性中的加字
+                    FindMultiColor 835, 858, 954, 917, "FFFFFF", "10|-9|ADDFEE,-28|5|ADE2EF,59|6|73D2E6,40|0|427594", 0, 0.9, intX, intY
+                    If intX>-1 And intY>-1 Then 
+                        TracePrint "&发现当前在加属性界面"
+                        in_attribute_option_ui = True
+                        Exit Function
+                    End If
+                End If
+            End If
+        End If
+    End If
+    
+    in_attribute_option_ui = False
+End Function
+
+Function in_bonus_ui
+    Dim intX, intY, x, y
+	
+    FindMultiColor 555,1028,648,1112,"19187B","-28|-17|3196FF,19|-27|10187B,-23|-48|4AAAFF,-46|-38|19187B",0,0.9,intX,intY
+    If intX>-1 And intY>-1 Then 
+        // TracePrint "找到了奖励领取界面的得字"
+        FindMultiColor 150,951,221,1054,"B5E3F7","-31|25|7CDBF7,-36|12|738A19,7|16|949A52,-29|-15|84DBEF,-19|27|738119",0,0.9,x,y
+        If x>-1 And y>-1 Then 
+            TracePrint "&发现当前在奖励领取界面"
+            in_bonus_ui = True
+            Exit Function
+        End If
+    End If
+    
+    in_bonus_ui = False
+End Function
+
+Function in_fighting_result_ui
+    Dim intX, intY, x, y
+    
+    FindMultiColor 985,837,1047,908,"523D19","21|0|B5DFF7,0|9|83D2E6,1|14|524019,-8|36|73CAE6,1|35|4A3D19",0,0.9,intX,intY
+    If intX>-1 And intY>-1 Then 
+        // TracePrint "找到了战斗报告中的战字"
+        FindMultiColor 528,1123,595,1163,"5BD2F7","-24|-3|319EFF,3|-10|0000E6,-8|9|0000EF",0,0.9,x,y
+        If x > -1 And y > -1 Then 
+            TracePrint "&发现当前在战斗结果界面"
+            in_fighting_result_ui = True
+            Exit Function
+        End If
+    End If
+
+    in_fighting_result_ui = False
+End Function
+
+Function 存星
+	
+End Function
+
+Function 血战
+    Tap 258,586
+    TracePrint "点击了血战"
+End Function
+
+Function 力战
+    Tap 256,957
+    TracePrint "点击了力战"
+End Function
+
+Function 奋战
+    Tap 257,1314
+    TracePrint "点击了奋战"
+End Function
+
+Function find_skipable_btn
+    Dim intX, intY
+	
+    FindMultiColor 56,886,132,1042,"ADE7FF","-1|6|423D2A,9|16|8C9252,-29|39|7BD7EE,-31|22|5A7919,-1|78|ADDFF7,-15|62|738621,10|67|94924A",0,0.9,intX,intY
+    If intX>-1 And intY>-1 Then 
+        TracePrint "找到了跳过按钮"
+    End If
+    find_skipable_btn = (intX>-1 And intY>-1)
+End Function
+
+Function find_disabled_skipable_btn
+    Dim intX, intY
+	
+    FindMultiColor 56,886,132,1042,"ADE7FF","-1|6|423D2A,9|16|848684,-29|39|7BD7EE,-31|22|6B6D6B,-1|78|ADDFF7,-15|62|6B6D6B,10|67|848684",0,0.9,intX,intY
+    If intX>-1 And intY>-1 Then 
+        TracePrint "找到了灰色的跳过按钮"
+    End If
+    find_disabled_skipable_btn = (intX>-1 And intY>-1)
+End Function
+
+Function skip_fighting
+    Dim try_times = 0
+    Dim attempt_tap = True
+	
+    ReleaseCapture 
+	
+    Do
+        Delay 500
+    	
+        If attempt_tap Then 
+            TracePrint "试图点击(87, 964)"
+            Tap 87, 964
+            Delay 100
+        End If
+        
+        KeepCapture 
+        If try_times > 40 Then 
+            TracePrint "1|尝试了40次仍未能跳过战斗放弃吧"
+            Exit Function
+        End If
+        
+        If find_disabled_skipable_btn() Then 
+            ReleaseCapture
+            TracePrint "-------->找到了灰色的跳过按钮"
+            attempt_tap = False
+        End If
+        
+        If find_skipable_btn() Then 
+            // 点击跳过按钮
+            TracePrint "-------->找到了跳过按钮"
+            Tap 87, 964
+            Exit Function
+        End If
+        
+        If in_fighting_result_ui() Or in_attribute_option_ui() Or in_bonus_ui() Then 
+            Exit Function
+        End If
+        ReleaseCapture
+    Loop
+End Function
+
+Function fast_fighting_enabled
+    Dim intX, intY
+	
+    FindColor 65,1562,154,1645,"319A21",0,0.9,intX,intY
+    If intX>-1 And intY>-1 Then 
+        TracePrint "当前为快速模式"
+        fast_fighting_enabled = True
+    Else 
+        fast_fighting_enabled = False
+    End If
+End Function
+
+Function waiting_for_fighting_result_ui_dismiss
+    ReleaseCapture 
+    Dim delays = 100
+    
+    Do
+        If in_fighting_result_ui() Then 
+            If delays > 10 Then 
+                Delay delays
+                delays = delays - 1
+            Else 
+                Exit Function
+            End If
+
+        Else 
+            Exit Function
+        End If		
+    Loop
+End Function
+
+Function 败北
+    Dim intX, intY
+	
+    FindMultiColor 761,402,957,544,"E6E7E6","-42|-12|DEDFDE,-38|-39|DEDBDE,-92|-37|BDBABD,-94|-13|BDBABD,-44|36|DEDFDE,-23|67|DEDFDE,-97|32|B5B6B5,21|6|9CAEB5,-54|72|7B8183",0,0.9,intX,intY
+    If intX > -1 And intY > -1 Then 
+        FindMultiColor 40,1142,133,1197,"B5E6F7","8|-11|738119,-38|2|7B8A29,-25|-2|84D7EF,-35|12|7BDAEE,-17|18|6B7119",0,0.9,intX,intY
+        If intX > -1 And intY > -1 Then 
+            TracePrint "败北了"
+            败北 = True
+            Exit Function
+        End If
+    End If
+    
+    败北 = False
+End Function
+
+
+Dim 最大气血 = 9999
+Dim 最大武力 = 9999
+Dim 最大防御 = 9999
+Dim 最大内力 = 9999
+Dim 最大身法 = 9999
+Dim 最大关卡 = 9999
+
+Dim 当前气血 = 15
+Dim 当前武力 = 30
+Dim 当前防御 = 45
+Dim 当前内力 = 36
+Dim 当前身法 = 18
+Dim 当前关卡 = 25
+
+Dim 闯关转力战 = 10
+Dim 闯关转奋战 = 15
+Dim 存星转力战 = 121
+Dim 存星转奋战 = 165
+
+Dim 当前模式 = "闯关"
+
+init_config 
+ShowMessage "当前关卡：" & 当前关卡 & "|魔教模式：" & 当前模式
+
+Dim 当前属性 = Array (当前气血, 当前武力, 当前防御, 当前内力, 当前身法, 当前关卡)
+Dim 最大属性 = Array (最大气血, 最大武力, 最大防御, 最大内力, 最大身法, 最大关卡)
+
+// 分别为气血、武力、防御、内力和身法属性对应的颜色
+Dim attr_color_03 = Array("AD81CE", "6B79C5", "7BCAEE", "AD9E6B", "73AA6B")
+Dim attr_color_15 = Array("A575D6", "5B75C6", "6BCAEF", "A5AA52", "63B25A")
+Dim attr_color_30 = Array("9C79C5", "6375D6", "73CAE6", "9C9E5A", "63AA52")
+Dim attr_names = Array("气血", "武力", "防御", "内力", "身法")
+
+Function 闯关
+
+    Do
+        KeepCapture 
+        
+        TracePrint "......当前关卡为：" & 当前关卡
+        If in_fighting_mode_option_ui() Then 
+            Dim is_fast_fighting_enabled = fast_fighting_enabled()
+            ReleaseCapture 
+            
+            If 当前模式 = "闯关" Then 
+                If 当前关卡 <= 闯关转力战 Then 
+                    血战 
+                ElseIf 当前关卡 <= 闯关转奋战 Then
+                    力战 
+                Else 
+                    奋战
+                End If
+            Else 
+                If 当前关卡 <= 存星转力战 Then 
+                    血战 
+                ElseIf 当前关卡 <= 存星转奋战 Then
+                    力战 
+                Else 
+                    奋战
+                End If
+            End If
+            
+            // 试图跳过战斗
+            If not is_fast_fighting_enabled Then 
+                TracePrint "试图跳过战斗"
+                skip_fighting 
+            End If
+        End If
+        
+        // 战斗结果界面
+        If in_fighting_result_ui() Then 
+            ReleaseCapture 
+            当前关卡 = 当前关卡 + 1
+            WriteConfig "当前关卡", 当前关卡
+            TracePrint "~~~~~~~~关卡数加1，变为：" & 当前关卡
+            Tap 79, 1138
+            TracePrint "点击了战斗结果界面的继续按钮"
+            waiting_for_fighting_result_ui_dismiss()
+            // 战斗结果界面逻辑完毕
+        End If
+        
+        // 属性选择界面
+        If in_attribute_option_ui() Then 
+            ReleaseCapture
+            attribute_adjustment 
+        End If
+        
+        // 奖励领取界面
+        If in_bonus_ui() Then 
+            ReleaseCapture
+            Tap 181, 957
+            TracePrint "点击了领取按钮"
+            Delay 200
+        End If
+        
+        If 败北() Then 
+            KeyPress "Power"
+            Delay 1000
+            Exit Function
+        End If
+        
+        ReleaseCapture
+    Loop
+	
+End Function
+
+//===================================================================
+// 血战结束
+//===================================================================
+
+SetScreenScale 1080, 1920
+Dim 辅助模式 = Int(ReadUIConfig("辅助模式"))
+Select Case 辅助模式
+Case 0
+    闯关 
+Case 1
+    DF_fightingMain
+End Select
+ResetScreenScale 
