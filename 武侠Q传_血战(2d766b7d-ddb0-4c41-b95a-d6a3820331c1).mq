@@ -407,31 +407,10 @@ Function attribute_adjustment
     // 三属性(坐标x, 坐标y, 属性类别, 属性值)
     // 属性类别用[0-4]的数字表示，[0-4]分别代表气血、武力、防御、内力和身法。
     // -1表示灰色不可用的属性类别
-    Dim 三属性(), 十五属性(), 三十属性()
-    三属性(0) = 574
-    三属性(1) = 565
-    三属性(2) = -1
-    三属性(3) = 3
-	
-    十五属性(0) = 574
-    十五属性(1) = 878
-    十五属性(2) = -1
-    十五属性(3) = 15
-	
-    三十属性(0) = 574
-    三十属性(1) = 1178
-    三十属性(2) = -1
-    三十属性(3) = 30
-    
-    // Ensure capture released
-    ReleaseCapture 
-    KeepCapture 
-    
-    fill_attr_type(三属性, attr_color_03)
-    fill_attr_type(十五属性, attr_color_15)
-    fill_attr_type 三十属性, attr_color_30
-    
-    ReleaseCapture 
+    Dim resolved_attrs = XZ_识别属性类型()
+    Dim 三属性 = resolved_attrs(0)
+    Dim 十五属性 = resolved_attrs(1)
+    Dim 三十属性 = resolved_attrs(2)
 	
     If 当前模式 = "存星" Then 
         TracePrint "由于当前模式为存星，直接加3属性"
@@ -637,10 +616,10 @@ Dim 当前内力 = 36
 Dim 当前身法 = 18
 Dim 当前关卡 = 25
 
-Dim 闯关转力战 = 10
-Dim 闯关转奋战 = 15
-Dim 存星转力战 = 121
-Dim 存星转奋战 = 165
+Dim 闯关转力战 = 420
+Dim 闯关转奋战 = 440
+Dim 存星转力战 = 135
+Dim 存星转奋战 = 500
 
 Dim 当前模式 = "闯关"
 
@@ -654,44 +633,98 @@ Dim 最大属性 = Array (最大气血, 最大武力, 最大防御, 最大内力, 最大身法, 最大关卡
 Dim attr_color_03 = Array("AD81CE", "6B79C5", "7BCAEE", "AD9E6B", "73AA6B")
 Dim attr_color_15 = Array("A575D6", "5B75C6", "6BCAEF", "A5AA52", "63B25A")
 Dim attr_color_30 = Array("9C79C5", "6375D6", "73CAE6", "9C9E5A", "63AA52")
+Dim attr_area03 = Array(447,540,707,665)
+Dim attr_area15 = Array(450,835,703,962)
+Dim attr_area30 = Array(447,1149,705,1272)
+Dim attr_areas = Array(attr_area03, attr_area15, attr_area30)
 Dim attr_names = Array("气血", "武力", "防御", "内力", "身法")
 
 Function exit_and_screen_off()
-	KeyPress "Power"
-	Delay 1000
-	EndScript
+    KeyPress "Power"
+    Delay 1000
+    EndScript
 End Function
 
-Function 寻找气血属性按钮
-	
+Function 寻找气血属性按钮(area)
+    Dim intX, intY
+    FindMultiColor area(0),area(1),area(2),area(3),"9455C5","26|-4|AD79CE,64|0|AD81DE,42|26|AD75DE",0,0.95,intX,intY
+    寻找气血属性按钮 = (intX>-1 And intY>-1)
 End Function
 
-Function 寻找武力属性按钮
-	
+Function 寻找武力属性按钮(area)
+    Dim intX, intY
+    FindMultiColor area(0), area(1), area(2), area(3), "5265BD", "37|3|5A75D6,28|38|4261D6,53|3|6379D6", 0, 0.95, intX, intY
+    寻找武力属性按钮 = (intX>-1 And intY>-1)
 End Function
 
-Function 寻找防御属性按钮
-	
+Function 寻找防御属性按钮(area)
+    Dim intX, intY
+    FindMultiColor area(0),area(1),area(2),area(3),"52B2DE","38|-4|7CCAE6,69|-1|7BD2EF,41|19|6BD6F7",0,0.95,intX,intY
+    寻找防御属性按钮 = (intX > -1 And intY > -1)
 End Function
 
-Function 寻找内力属性按钮
-	
+Function 寻找内力属性按钮(area)
+    Dim intX, intY
+    FindMultiColor area(0),area(1),area(2),area(3),"948E3A","46|-3|A5A25B,16|11|9D9E32,25|61|9C9619",0,0.95,intX,intY
+    寻找内力属性按钮 = (intX>-1 And intY>-1)
 End Function
 
-Function 寻找身法属性按钮
-	
+Function 寻找身法属性按钮(area)
+    Dim intX, intY
+    FindMultiColor area(0),area(1),area(2),area(3),"4A963A","59|-3|73B263,40|23|52B63A,33|0|6BAA5A",0,0.95,intX,intY
+    寻找身法属性按钮 = (intX>-1 And intY>-1)
 End Function
 
-Function 寻找不可用属性按钮
+Function XZ_识别属性类型()
+    // 属性数组的前两个值没有用，后两个分别代表：属性类型和属性的值。
+    Dim 三属性 = Array(0, 0, -1, 3) 
+    Dim 十五属性 = Array(0, 0, -1, 15)
+    Dim 三十属性 = Array(0, 0, -1, 30)
+    Dim attrs = Array(三属性, 十五属性, 三十属性)
+    Dim area, attr
+    // 对应bool值分别代表：气血、武力、防御、内力、身法和不可用
+    Dim attr_found_marks = Array(False, False, False, False, False, False) 
+
+    ReleaseCapture
+    KeepCapture 
 	
+    For i = 0 To 2
+        area = attr_areas(i)
+		
+        If (Not attr_found_marks(0)) And 寻找气血属性按钮(area) Then 
+            attr_found_marks(0) = True
+            attr = attrs(i)
+            attr(2) = 0
+        ElseIf (Not attr_found_marks(1)) And 寻找武力属性按钮(area) Then
+            attr_found_marks(1) = True
+            attr = attrs(i)
+            attr(2) = 1
+        ElseIf (Not attr_found_marks(2)) And 寻找防御属性按钮(area) Then
+            attr_found_marks(2) = True
+            attr = attrs(i)
+            attr(2) = 2
+        ElseIf (Not attr_found_marks(3)) And 寻找内力属性按钮(area) Then
+            attr_found_marks(3) = True
+            attr = attrs(i)
+            attr(2) = 3
+        ElseIf (Not attr_found_marks(4)) And 寻找身法属性按钮(area) Then
+            attr_found_marks(4) = True
+            attr = attrs(i)
+            attr(2) = 4
+        End If
+    Next
+    
+    ReleaseCapture
+    // 返回识别结果 :)
+    XZ_识别属性类型 = attrs
 End Function
 
 Function 闯关
 
     Do
-    	ReleaseCapture
-    	Rem LoopEntry
-    	Delay 50
+        ReleaseCapture
+        Rem LoopEntry
+        Delay 50
         KeepCapture 
         
         TracePrint "......当前关卡为：" & 当前关卡
@@ -717,7 +750,7 @@ Function 闯关
             End If
             
             If not is_fast_fighting_enabled Then 
-            	// 试图跳过战斗
+                // 试图跳过战斗
                 skip_fighting 
             End If
             
