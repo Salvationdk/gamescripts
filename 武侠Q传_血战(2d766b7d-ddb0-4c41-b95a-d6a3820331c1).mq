@@ -591,9 +591,11 @@ Function skip_fighting
             Exit Function
         End If
         
-        If in_fighting_result_ui() Or in_attribute_option_ui() Or in_bonus_ui() Then 
+        If in_fighting_result_ui() Or in_attribute_option_ui() Or in_bonus_ui() or in_fighting_mode_option_ui()  Then 
             Exit Function
         End If
+        
+        try_times = try_times + 1
         ReleaseCapture
     Loop
 End Function
