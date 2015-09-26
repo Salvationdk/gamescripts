@@ -1,4 +1,158 @@
 //===================================================================
+// 论剑开始^
+//===================================================================
+Function LJ_点击对手
+    Tap 585,1491
+End Function
+
+Function LJ_点击挑战
+    Tap 460,1297
+End Function
+
+Function LJ_寻找挑战
+    Dim intX, intY
+    FindMultiColor 352,1184,552,1405,"CEDFF7","-15|24|0081FF,-101|61|000421,-28|-82|1059FF,13|-28|CEDFEF,4|3|C6DBF7",0,0.9,intX,intY
+    LJ_寻找挑战 = (intX>-1 And intY>-1)
+End Function
+
+Function LJ_寻找挑战次数不足
+    Dim intX, intY
+    FindMultiColor 285,824,387,1129,"94DBEF","-10|38|7C9221,-21|38|7BDEEE,-2|66|94DBF7,-10|76|6B7E19,-4|93|737E19,13|161|424921,5|-36|6B7121",0,0.9,intX,intY
+    LJ_寻找挑战次数不足 = (intX > -1 And intY > -1)
+    If intX > -1 And intY > -1 Then 
+        TracePrint "发现挑战次数不足"
+    End If
+End Function
+
+Function LJ_点击使用掌门令
+    Tap 332,981
+End Function
+
+Function LJ_寻找战斗结果界面
+    TracePrint "进入到寻找战斗结果界面函数"
+    Dim intX, intY
+    FindMultiColor 29,768,140,1144,"4A3D21","-8|-146|94DEEE,1|145|A4DFEF,-6|112|737921,-8|-124|6B7921",0,0.9,intX,intY
+    If intX>-1 And intY>-1 Then 
+        TracePrint "找到了战斗结果界面"
+    Else 
+        TracePrint "intX=" & intX & ", intY=" & intY
+    End If
+    LJ_寻找战斗结果界面 = (intX>-1 And intY>-1)
+End Function
+
+Function LJ_点击继续论剑按钮
+    Tap 79,1138
+End Function
+
+Function LJ_skip_fighting
+    Dim try_times = 0
+    Dim attempt_tap = True
+	
+    ReleaseCapture 
+	
+    Do
+        Delay 500
+        
+        If LJ_寻找挑战次数不足() Then 
+            LJ_点击使用掌门令 
+            TracePrint "使用了掌门令"
+            
+            Dim count = 0
+            While LJ_寻找挑战次数不足() And count < 50
+                count = count + 1
+                Delay 300
+            Wend
+            LJ_点击挑战
+            Delay 100
+        End If
+    	
+        If attempt_tap Then 
+            Tap 87, 964
+            Delay 100
+        End If
+        
+        KeepCapture 
+        If try_times > 200 Then 
+            TracePrint "1|尝试了40次仍未能跳过战斗放弃吧"
+            Exit Function
+        End If
+        
+        If find_disabled_skipable_btn() Then 
+            ReleaseCapture
+            TracePrint "-------->找到了灰色的跳过按钮"
+            attempt_tap = False
+        End If
+        
+        If find_skipable_btn() Then 
+            // 点击跳过按钮
+            TracePrint "-------->找到了跳过按钮"
+            Tap 87, 964
+            Exit Function
+        End If
+        
+        If LJ_寻找战斗结果界面() Then 
+            Exit Function
+        End If
+        
+        try_times = try_times + 1
+        ReleaseCapture
+    Loop
+End Function
+
+Function LJ_寻找论剑界面左上角争霸按钮
+    Dim intX, intY
+    FindMultiColor 881, 29, 1078, 205, "E6FBF7", "-7|-1|BEF3FF,-63|-29|0871F7,-57|28|218AF7,-122|-33|000031,-119|44|000031,-171|-2|5A9ABD,-90|-30|0008F7", 0, 0.9, intX, intY
+    LJ_寻找论剑界面左上角争霸按钮 = (intX>-1 And intY>-1)
+End Function
+
+Function LJ_论剑
+    
+    Do
+        TracePrint "论剑循环开始 ->"
+        ReleaseCapture
+    	
+        If LJ_寻找论剑界面左上角争霸按钮() Then
+            LJ_点击对手 
+            TracePrint "点击了论剑对手"
+        End If
+        
+        While LJ_寻找战斗结果界面() 
+            TracePrint "发现当前在战斗结果界面"
+            LJ_点击继续论剑按钮 
+            Delay 200
+            TracePrint "点击了继续论剑按钮"
+        Wend
+        
+        If LJ_寻找挑战次数不足() Then 
+            LJ_点击使用掌门令 
+            TracePrint "--------使用了掌门令"
+            Dim count = 0
+            While LJ_寻找挑战次数不足() And count < 50
+                count = count + 1
+                Delay 300
+            Wend
+            LJ_点击挑战
+        End If
+		
+        If LJ_寻找挑战() Then 
+            LJ_点击挑战 
+            Delay 100
+            TracePrint "点击了挑战按钮并试图跳过战斗"
+            LJ_skip_fighting 
+            TracePrint "跳过了战斗"
+            Delay 300
+            LJ_点击继续论剑按钮 
+            TracePrint "点击了继续论剑按钮"
+        End If
+       
+        Delay 300
+    Loop
+End Function
+//===================================================================
+// 论剑结束$
+//===================================================================
+
+//===================================================================
 // 巅峰争霸开始^
 //===================================================================
 Function DF_寻找巅峰按钮()
@@ -383,7 +537,7 @@ Function waiting_for_fighting_result_ui_dismiss
     
     Do
         If in_fighting_result_ui() Then 
-        	TracePrint "-> 发现当前在战斗结果界面"
+            TracePrint "-> 发现当前在战斗结果界面"
             If delays > 10 Then 
                 Delay delays
                 delays = delays - 1
@@ -492,8 +646,8 @@ Function in_attribute_option_ui
                 If intX > -1 And intY > -1 Then 
                     FindMultiColor 862,765,947,873,"080808","0|40|080808,-20|46|296184,-38|1|A4DAEE,-36|21|ADDBE6",0,0.9,intX,intY
                     If intX > -1 And intY > -1 Then 
-                    	// TracePrint "发现当前在属性选择界面"
-                    	in_attribute_option_ui = True
+                        // TracePrint "发现当前在属性选择界面"
+                        in_attribute_option_ui = True
                         Exit Function
                     End If
                 End If
@@ -812,6 +966,8 @@ Select Case 辅助模式
 Case 0
     闯关 
 Case 1
-    DF_巅峰战斗主循环
+    DF_巅峰战斗主循环 
+Case 2
+    LJ_论剑
 End Select
 ResetScreenScale 
