@@ -1,0 +1,83 @@
+//===================================================================
+// 不败神话开始^
+//===================================================================
+Function BB_寻找巅峰按钮()
+    Dim intX, intY
+    FindMultiColor 662,34,810,184,"0886F7","20|97|001484,65|46|C5FFF7,-37|42|6B8184,1|39|0010DE,7|64|108AFF,38|72|19BEFF,-49|42|0051D6",0,0.9,intX,intY
+    BB_寻找巅峰按钮 = (intX>-1 And intY>-1)
+End Function
+
+Function BB_寻找大挑战按钮
+    Dim intX, intY
+    FindMultiColor 438,1369,758,1673,"C5DFF7","-22|4|CEDBF7,-34|-78|085DFF,-45|7|1039FF,-109|70|000421,52|113|8CDBDE",0,0.9,intX,intY
+    If intX>-1 And intY>-1 Then 
+        TracePrint "找到了大的挑战按钮"
+    End If
+    BB_寻找大挑战按钮 = (intX>-1 And intY>-1)
+End Function
+
+Function BB_寻找挑战按钮
+    Dim intX, intY
+    FindMultiColor 58,1504,305,1758,"C5DBEF","-10|4|D6DBEF,-5|107|94EBFF,-35|-74|0845FF,-95|61|100021,-38|6|0841FF",0,0.9,intX,intY
+    If intX>-1 And intY>-1 Then 
+        TracePrint "找到了小的挑战按钮"
+    End If
+    BB_寻找挑战按钮 = (intX>-1 And intY>-1)
+End Function
+
+Function BB_寻找继续按钮
+    Dim intX, intY
+    FindMultiColor 32,1085,136,1304,"ACDFFF","9|-8|738A19,-6|44|6B7921,-31|26|738621,-16|22|83DEF7,-4|102|525519",0,0.9,intX,intY
+    If intX>-1 And intY>-1 Then 
+        TracePrint "找到了继续按钮"
+    End If
+    BB_寻找继续按钮 = (intX>-1 And intY>-1)
+End Function
+
+Function BB_寻找战斗结束后的元神图标
+    Dim intX, intY
+    FindMultiColor 409,183,584,356,"FFFFFF","1|40|FF8919,14|-37|FF8110,29|-12|FFFF5A,42|14|FFF321,102|-32|CE35AD,111|-3|52AAC6,-39|3|C631A5",0,0.9,intX,intY
+    If intX>-1 And intY>-1 Then 
+        TracePrint "找到了战斗结束后的元神图标"
+    End If
+    BB_寻找战斗结束后的元神图标 = (intX>-1 And intY>-1)
+End Function
+
+Function 不败
+    If BB_寻找巅峰按钮() Then 
+        Tap 515,107
+    End If
+	
+    Do
+        Rem BB_LoopEntry
+    	
+        Delay 100
+		
+        If BB_寻找大挑战按钮() Then 
+            Tap 611, 1508
+            Delay 500
+            Goto BB_LoopEntry
+        End If
+		
+        If BB_寻找挑战按钮 Then 
+            Tap 183, 1633
+            Delay 500
+            Goto BB_LoopEntry
+        End If
+        
+        If BB_寻找继续按钮 Then 
+            Tap 76, 1133
+            Goto BB_LoopEntry
+        End If
+        
+        If BB_寻找战斗结束后的元神图标 Then 
+        	Exit Do
+        End If
+		
+    Loop
+End Function
+//===================================================================
+// 不败神话结束
+//===================================================================
+
+不败 
