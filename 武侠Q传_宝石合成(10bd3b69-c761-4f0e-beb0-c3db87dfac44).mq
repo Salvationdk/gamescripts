@@ -1,0 +1,61 @@
+Function BS_宝石数量大于一
+    Dim intX, intY
+    FindColor 281,626,328,683,"0000FF",0,0.9,intX,intY
+    BS_宝石数量大于一 = Not(intX>-1 And intY>-1)
+End Function
+
+Function BS_寻找确定合成按钮
+    Dim intX, intY
+    FindMultiColor 248,1051,364,1276,"9CDFEF","-5|40|94DBF7,-15|19|839221,-30|34|7B8A19,16|39|ADDFF7,41|18|6BBACE",0,0.9,intX,intY
+    If intX>-1 And intY>-1 Then 
+        TracePrint "找到了确定按钮" 
+    End If
+    BS_寻找确定合成按钮 = (intX>-1 And intY>-1)
+End Function
+
+Function BS_scrollUpOneStep()
+    TracePrint "开始滚动"
+    TouchDown 263, 1451, 1
+    TouchMove 456, 1451, 1, 200
+    TouchUp 
+    TracePrint "结束滚动"
+End Function
+
+Function BS_宝石合成
+    //点击宝石合成按钮
+    Tap 424, 1643
+    Delay 200
+    
+    Do
+        //点击宝石列表可见的最上面一个宝石
+        Tap 757, 1442
+        Delay 100
+    
+        If BS_宝石数量大于一() Then 
+            //点击++按钮
+            Tap 305, 1005
+            Delay 100
+            //点击合成
+            Tap 76,656
+            Delay 100
+            
+            Dim count = 0
+            While BS_寻找确定合成按钮() And count < 100
+                TracePrint "找到了确定合成按钮"
+                Tap 302, 1154
+                Delay 100
+                count = count + 1
+            Wend
+        End If
+        
+        BS_scrollUpOneStep 
+        Delay 100
+    
+    Loop
+    
+    
+End Function
+
+//BS_寻找确定合成按钮
+BS_宝石合成 
+//BS_scrollUpOneStep 
