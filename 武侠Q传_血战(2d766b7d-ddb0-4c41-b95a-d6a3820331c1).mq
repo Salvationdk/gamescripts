@@ -378,11 +378,12 @@ End Function
 
 Function waiting_for_fighting_result_ui_dismiss
     ReleaseCapture
-    Dim delays = 500
+    Dim delays = 300
     Delay delays
     
     Do
         If in_fighting_result_ui() Then 
+        	TracePrint "-> 发现当前在战斗结果界面"
             If delays > 10 Then 
                 Delay delays
                 delays = delays - 1
