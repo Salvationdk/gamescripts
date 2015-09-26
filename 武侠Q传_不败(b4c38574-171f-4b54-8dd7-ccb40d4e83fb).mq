@@ -59,18 +59,18 @@ Function 不败
             Goto BB_LoopEntry
         End If
 		
-        If BB_寻找挑战按钮 Then 
+        If BB_寻找挑战按钮() Then 
             Tap 183, 1633
             Delay 500
             Goto BB_LoopEntry
         End If
         
-        If BB_寻找继续按钮 Then 
+        If BB_寻找继续按钮() Then 
             Tap 76, 1133
             Goto BB_LoopEntry
         End If
         
-        If BB_寻找战斗结束后的元神图标 Then 
+        If BB_寻找战斗结束后的元神图标() Then 
         	Exit Do
         End If
 		
