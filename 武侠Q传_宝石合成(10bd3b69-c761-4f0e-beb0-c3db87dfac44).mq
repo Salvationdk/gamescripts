@@ -13,11 +13,17 @@ Function BS_寻找确定合成按钮
     BS_寻找确定合成按钮 = (intX>-1 And intY>-1)
 End Function
 
-Function BS_scrollUpOneStep()
+Function BS_scrollUp(steps)
+    BS_scrollUp_with_delays(steps, 300)
+End Function
+
+Function BS_scrollUp_with_delays(steps, delays)
     TracePrint "开始滚动"
-    TouchDown 263, 1451, 1
-    TouchMove 456, 1451, 1, 200
-    TouchUp 
+    For steps
+        TouchDown 263, 1451, 1
+        TouchMove 456, 1451, 1, delays
+        TouchUp 
+    Next
     TracePrint "结束滚动"
 End Function
 
@@ -25,6 +31,7 @@ Function BS_宝石合成
     //点击宝石合成按钮
     Tap 424, 1643
     Delay 200
+    Dim steps = 0
     
     Do
         //点击宝石列表可见的最上面一个宝石
@@ -46,9 +53,15 @@ Function BS_宝石合成
                 Delay 100
                 count = count + 1
             Wend
+            
+            If count < 100 Then 
+                BS_scrollUp_with_delays(steps, 200)
+                TracePrint "一次性移动了=" & steps & 步
+            End If
         End If
         
-        BS_scrollUpOneStep 
+        BS_scrollUp(1)
+        steps = steps + 1
         Delay 100
     
     Loop
@@ -59,3 +72,4 @@ End Function
 //BS_寻找确定合成按钮
 BS_宝石合成 
 //BS_scrollUpOneStep 
+//BS_scrollUp(50)
