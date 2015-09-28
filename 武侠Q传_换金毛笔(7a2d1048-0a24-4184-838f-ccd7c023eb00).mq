@@ -1,3 +1,6 @@
+//===================================================================
+// 参悟开始^
+//===================================================================
 Function CW_乙级物品(area)
     Dim intX, intY, found = -1
     FindColor area(0),area(1),area(2),area(3),"DE7529",0,0.96,intX,intY
@@ -31,12 +34,36 @@ End Function
 
 
 Function CW_read_config
-    Dim level = ReadUIConfig("兑换等级")
+    Dim level = ReadUIConfig("兑换等级", 0)
     CW_read_config = level
 End Function
 
+Function CW_寻找本次参悟物品绿勾()
+    Dim i = 0, area, intX, intY
+    Dim area0 = Array(694,1586,777,1674)
+    Dim area1 = Array(490,1591,571,1674)
+    Dim area2 = Array(283,1592,367,1673)
+    Dim area3 = Array(79,1592,162,1674)
+    Dim areas = Array(area0, area1, area2, area3)
+    
+    For i = 0 To 3
+        area = areas(i)
+        FindMultiColor area(0),area(1),area(2),area(3),"399A29","-1|6|299A21",0,0.9,intX,intY
+        If intX > -1 And intY > -1 Then 
+            TracePrint "找到了本次参悟物品"
+            CW_寻找本次参悟物品绿勾 = True
+            Exit Function
+        End If
+    Next
+    CW_寻找本次参悟物品绿勾 = False
+End Function
+
 Function CW_等待参悟结束
-	Delay 1000
+    Dim count = 0
+    While CW_寻找本次参悟物品绿勾() And count < 30
+        Delay 500
+        count = count + 1
+    Wend
 End Function
 
 Function CW_参悟
@@ -47,8 +74,10 @@ Function CW_参悟
     Dim area3 = Array(67,1278,124,1351)
     Dim areas = Array(area0, area1, area2, area3)
     Dim level = CW_read_config()
+    Dim ret0, ret1, ret2
 
     Do
+    	Dim counter = 0
         For i = 0 To 3
             Dim area = areas(i)
             //ret0 = (level, x, y), level为物品等级，x,y为物品坐标。
@@ -58,46 +87,42 @@ Function CW_参悟
             ret1 = CW_丙级物品(area)
             ret2 = CW_乙级物品(area)
             
-            Dim counter = 0
-            If ret0(0) <> -1 And ret0(0) < level Then 
+            If ret0(0) <> -1 And ret0(0) <= level Then 
                 Tap ret0(1), ret0(2)
                 Delay 100
                 counter = counter + 1
             End If
             
-            If ret0(0) <> -1 And ret0(0) < level Then 
-                Tap ret0(1), ret0(2)
+            If ret1(0) <> -1 And ret1(0) <= level Then 
+                Tap ret1(1), ret1(2)
                 Delay 100
                 counter = counter + 1
             End If
             
-            If ret0(0) <> -1 And ret0(0) < level Then 
-                Tap ret0(1), ret0(2)
+            If ret2(0) <> -1 And ret2(0) <= level Then 
+                Tap ret2(1), ret2(2)
                 Delay 100
                 counter = counter + 1
             End If
-            
-            If counter > 0 Then 
-                //点击参悟按钮
-                Tap 81, 619
-                CW_等待参悟结束
-            Else 
-                //参悟结束
-                Exit Function
-            End If
-            
         Next
-			
+        
+        If counter > 0 Then 
+            //点击参悟按钮
+            Tap 81, 619
+            Delay 500
+            CW_等待参悟结束
+        Else 
+            //参悟结束
+            Exit Function
+        End If
+        
+        Delay 500
     Loop
 	
 End Function
+//===================================================================
+// 参悟结束$
+//===================================================================
 
-Dim area0 = Array(684,1280,743,1351)
-Dim area1 = Array(479,1279,536,1351)
-Dim area2 = Array(272,1279,329,1351)
-Dim area3 = Array(67,1278,124,1351)
-CW_乙级物品(area0)
-CW_丙级物品(area0) 
-CW_丁级物品(area0) 
-
-//CW_参悟 
+CW_参悟 
+//CW_寻找本次参悟物品绿勾()

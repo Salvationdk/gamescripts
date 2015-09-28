@@ -1,3 +1,6 @@
+//===================================================================
+// 宝石合成开始^
+//===================================================================
 Function BS_宝石数量大于一
     Dim intX, intY
     FindColor 281,626,328,683,"0000FF",0,0.9,intX,intY
@@ -50,6 +53,7 @@ Function BS_宝石合成
     Thread.Start(BS_检测达宝石列表尽头)
     
     Do
+        Rem BS_LoopEntry
         //点击宝石列表可见的最上面一个宝石
         Tap 757, 1442
         Delay 100
@@ -70,9 +74,11 @@ Function BS_宝石合成
                 count = count + 1
             Wend
             
-            If count < 100 Then 
-                BS_scrollUp_with_delays(steps, 200)
+            If count < 100 And steps > 0 Then 
+                Delay 500
+                BS_scrollUp_with_delays(steps - 1, 200)
                 TracePrint "一次性移动了=" & steps & "步"
+                Goto BS_LoopEntry
             End If
         End If
         
@@ -81,7 +87,7 @@ Function BS_宝石合成
         Delay 100
         
         If Thread.GetShareVar("listending") Then 
-        	TracePrint "list ending arrived~"
+            TracePrint "list ending arrived~"
             Exit Function
         End If
     
@@ -89,6 +95,9 @@ Function BS_宝石合成
     
     
 End Function
+//===================================================================
+// 宝石合成结束$
+//===================================================================
 
 //BS_寻找确定合成按钮
 BS_宝石合成 

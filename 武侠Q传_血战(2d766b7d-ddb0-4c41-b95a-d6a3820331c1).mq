@@ -1,4 +1,231 @@
 //===================================================================
+// 宝石合成开始^
+//===================================================================
+Function BS_宝石数量大于一
+    Dim intX, intY
+    FindColor 281,626,328,683,"0000FF",0,0.9,intX,intY
+    BS_宝石数量大于一 = Not(intX>-1 And intY>-1)
+End Function
+
+Function BS_寻找确定合成按钮
+    Dim intX, intY
+    FindMultiColor 248,1051,364,1276,"9CDFEF","-5|40|94DBF7,-15|19|839221,-30|34|7B8A19,16|39|ADDFF7,41|18|6BBACE",0,0.9,intX,intY
+    If intX>-1 And intY>-1 Then 
+        TracePrint "找到了确定按钮" 
+    End If
+    BS_寻找确定合成按钮 = (intX>-1 And intY>-1)
+End Function
+
+Function BS_scrollUp(steps)
+    BS_scrollUp_with_delays(steps, 300)
+End Function
+
+Function BS_scrollUp_with_delays(steps, delays)
+    TracePrint "开始滚动"
+    For steps
+        TouchDown 263, 1451, 1
+        TouchMove 456, 1451, 1, delays
+        TouchUp 
+    Next
+    TracePrint "结束滚动"
+End Function
+
+Function BS_检测达宝石列表尽头
+    Do
+        Dim intX, intY
+        FindColor 43,1178,409,1193,"5AB2D6",0,0.9,intX,intY
+        If Not(intX>-1 And intY>-1) Then 
+            Thread.SetShareVar "listending", True
+            Exit Do
+        End If
+        
+        Delay 300
+    Loop
+End Function
+
+Function BS_宝石合成
+    //点击宝石合成按钮
+    Tap 424, 1643
+    Delay 200
+    Dim steps = 0
+    
+    Thread.SetShareVar "listending", False
+    Thread.Start(BS_检测达宝石列表尽头)
+    
+    Do
+        Rem BS_LoopEntry
+        //点击宝石列表可见的最上面一个宝石
+        Tap 757, 1442
+        Delay 100
+    
+        If BS_宝石数量大于一() Then 
+            //点击++按钮
+            Tap 305, 1005
+            Delay 100
+            //点击合成
+            Tap 76,656
+            Delay 100
+            
+            Dim count = 0
+            While BS_寻找确定合成按钮() And count < 100
+                TracePrint "找到了确定合成按钮"
+                Tap 302, 1154
+                Delay 100
+                count = count + 1
+            Wend
+            
+            If count < 100 And steps > 0 Then 
+                Delay 500
+                BS_scrollUp_with_delays(steps - 1, 200)
+                TracePrint "一次性移动了=" & steps & "步"
+                Goto BS_LoopEntry
+            End If
+        End If
+        
+        BS_scrollUp(1)
+        steps = steps + 1
+        Delay 100
+        
+        If Thread.GetShareVar("listending") Then 
+            TracePrint "list ending arrived~"
+            Exit Function
+        End If
+    
+    Loop
+    
+    
+End Function
+//===================================================================
+// 宝石合成结束$
+//===================================================================
+
+//===================================================================
+// 参悟开始^
+//===================================================================
+Function CW_乙级物品(area)
+    Dim intX, intY, found = -1
+    FindColor area(0),area(1),area(2),area(3),"DE7529",0,0.96,intX,intY
+    If intX>-1 And intY>-1 Then 
+        TracePrint "是乙级物品"
+        found = 2
+    End If
+    CW_乙级物品 = Array(found, intX, intY)
+End Function
+
+Function CW_丙级物品(area)
+    Dim intX, intY, found = -1
+    FindColor area(0),area(1),area(2),area(3),"399A21",0,0.96,intX,intY
+    If intX>-1 And intY>-1 Then 
+        TracePrint "是丙级物品"
+        found = 1
+    End If
+    CW_丙级物品 = Array(found, intX, intY)
+End Function
+
+
+Function CW_丁级物品(area)
+    Dim intX, intY, found = -1
+    FindColor area(0),area(1),area(2),area(3),"A4A2A4",0,0.96,intX,intY
+    If intX>-1 And intY>-1 Then 
+        TracePrint "是丁级物品"
+        found = 0
+    End If
+    CW_丁级物品 = Array(found, intX, intY)
+End Function
+
+
+Function CW_read_config
+    Dim level = ReadUIConfig("兑换等级", 0)
+    CW_read_config = level
+End Function
+
+Function CW_寻找本次参悟物品绿勾()
+    Dim i = 0, area, intX, intY
+    Dim area0 = Array(694,1586,777,1674)
+    Dim area1 = Array(490,1591,571,1674)
+    Dim area2 = Array(283,1592,367,1673)
+    Dim area3 = Array(79,1592,162,1674)
+    Dim areas = Array(area0, area1, area2, area3)
+    
+    For i = 0 To 3
+        area = areas(i)
+        FindMultiColor area(0),area(1),area(2),area(3),"399A29","-1|6|299A21",0,0.9,intX,intY
+        If intX > -1 And intY > -1 Then 
+            TracePrint "找到了本次参悟物品"
+            CW_寻找本次参悟物品绿勾 = True
+            Exit Function
+        End If
+    Next
+    CW_寻找本次参悟物品绿勾 = False
+End Function
+
+Function CW_等待参悟结束
+    Dim count = 0
+    While CW_寻找本次参悟物品绿勾() And count < 30
+        Delay 500
+        count = count + 1
+    Wend
+End Function
+
+Function CW_参悟
+
+    Dim area0 = Array(684,1280,743,1351)
+    Dim area1 = Array(479,1279,536,1351)
+    Dim area2 = Array(272,1279,329,1351)
+    Dim area3 = Array(67,1278,124,1351)
+    Dim areas = Array(area0, area1, area2, area3)
+    Dim level = CW_read_config()
+    Dim ret0, ret1, ret2
+
+    Do
+        Dim counter = 0
+        For i = 0 To 3
+            Dim area = areas(i)
+            //ret0 = (level, x, y), level为物品等级，x,y为物品坐标。
+            //level=-1表示没找到指定等级的物品
+            //level定义:丁级(0)，丙级(1)，乙级(2)
+            ret0 = CW_丁级物品(area)
+            ret1 = CW_丙级物品(area)
+            ret2 = CW_乙级物品(area)
+            
+            If ret0(0) <> -1 And ret0(0) <= level Then 
+                Tap ret0(1), ret0(2)
+                Delay 100
+                counter = counter + 1
+            End If
+            
+            If ret1(0) <> -1 And ret1(0) <= level Then 
+                Tap ret1(1), ret1(2)
+                Delay 100
+                counter = counter + 1
+            End If
+            
+            If ret2(0) <> -1 And ret2(0) <= level Then 
+                Tap ret2(1), ret2(2)
+                Delay 100
+                counter = counter + 1
+            End If
+        Next
+        
+        If counter > 0 Then 
+            //点击参悟按钮
+            Tap 81, 619
+            Delay 500
+            CW_等待参悟结束
+        Else 
+            //参悟结束
+            Exit Function
+        End If
+        
+        Delay 500
+    Loop
+	
+End Function
+//===================================================================
+// 参悟结束$
+//===================================================================
+
+//===================================================================
 // 论剑开始^
 //===================================================================
 Function LJ_点击对手
@@ -792,7 +1019,7 @@ Dim 存星转奋战 = 500
 Dim 当前模式 = "存星"
 
 init_config 
-ShowMessage "当前关卡：" & 当前关卡 & "|魔教模式：" & 当前模式
+//ShowMessage "当前关卡：" & 当前关卡 & "|魔教模式：" & 当前模式
 
 Dim 当前属性 = Array (当前气血, 当前武力, 当前防御, 当前内力, 当前身法, 当前关卡)
 Dim 最大属性 = Array (最大气血, 最大武力, 最大防御, 最大内力, 最大身法, 最大关卡)
@@ -968,6 +1195,10 @@ Case 0
 Case 1
     DF_巅峰战斗主循环 
 Case 2
-    LJ_论剑
+    LJ_论剑 
+Case 3
+    CW_参悟 
+Case 4
+    BS_宝石合成
 End Select
 ResetScreenScale 
