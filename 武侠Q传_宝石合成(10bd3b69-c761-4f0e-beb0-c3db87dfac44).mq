@@ -27,11 +27,27 @@ Function BS_scrollUp_with_delays(steps, delays)
     TracePrint "结束滚动"
 End Function
 
+Function BS_检测达宝石列表尽头
+    Do
+        Dim intX, intY
+        FindColor 43,1178,409,1193,"5AB2D6",0,0.9,intX,intY
+        If Not(intX>-1 And intY>-1) Then 
+            Thread.SetShareVar "listending", True
+            Exit Do
+        End If
+        
+        Delay 300
+    Loop
+End Function
+
 Function BS_宝石合成
     //点击宝石合成按钮
     Tap 424, 1643
     Delay 200
     Dim steps = 0
+    
+    Thread.SetShareVar "listending", False
+    Thread.Start(BS_检测达宝石列表尽头)
     
     Do
         //点击宝石列表可见的最上面一个宝石
@@ -56,13 +72,18 @@ Function BS_宝石合成
             
             If count < 100 Then 
                 BS_scrollUp_with_delays(steps, 200)
-                TracePrint "一次性移动了=" & steps & 步
+                TracePrint "一次性移动了=" & steps & "步"
             End If
         End If
         
         BS_scrollUp(1)
         steps = steps + 1
         Delay 100
+        
+        If Thread.GetShareVar("listending") Then 
+        	TracePrint "list ending arrived~"
+            Exit Function
+        End If
     
     Loop
     
