@@ -488,11 +488,19 @@ Function DF_巅峰战斗ING()
 	
     Do
         If DF_没有巅峰令牌() Then 
-            exit_and_screen_off()
+            If Not 开启自动任务 Then 
+                exit_and_screen_off 
+            Else 
+                Exit Function
+            End If
         End If
     	
         If DF_战斗次数已用完() Then 
-            exit_and_screen_off()
+            If Not 开启自动任务 Then 
+                exit_and_screen_off 
+            Else 
+                Exit Function
+            End If
         End If
     	
         DF_通过点击尝试跳过 
@@ -539,13 +547,17 @@ Function DF_巅峰战斗主循环
         DF_captureReleased = False
     
         If DF_战斗次数已用完() Then 
-            KeyPress "Power"
+            If Not 开启自动任务 Then 
+                KeyPress "Power"
+            End If
             Delay 1000
             Exit Do
         End If
     
         If DF_没有巅峰令牌() Then 
-            KeyPress "Power"
+            If Not 开启自动任务 Then 
+                KeyPress "Power"
+            End If
             Delay 1000
             EndScript
         End If
@@ -657,6 +669,7 @@ Function find_mo_jiao_zong_tan_icon
 End Function
 
 Function scroll_until_mo_jiao_zong_tan_icon_found
+    ReleaseCapture
     Dim result = find_mo_jiao_zong_tan_icon()
 	
     If result Then 
@@ -668,12 +681,13 @@ Function scroll_until_mo_jiao_zong_tan_icon_found
     For 3
         Swipe 174, 248, 174, 1751, 200
     Next
-    Delay 500
+    Delay 1000
     
     // 向左滚动直到找到魔教总坛图标为止
     Do
-        Swipe 153, 395, 153, 195, 200
+        Swipe 153, 395, 153, 195, 1000
         result = find_mo_jiao_zong_tan_icon()
+        TracePrint "Swipe to find ..."
         If result Then 
             scroll_until_mo_jiao_zong_tan_icon_found = result
             Exit Do
@@ -682,10 +696,35 @@ Function scroll_until_mo_jiao_zong_tan_icon_found
 	
 End Function
 
+Function init_auto_mode
+    开启自动任务 = ReadUIConfig("开启自动任务")
+    开启自动巅峰 = ReadUIConfig("开启自动巅峰")
+    开启自动魔教 = ReadUIConfig("开启自动魔教")
+    开三倍闯关 = ReadUIConfig("开三倍闯关")
+    第一次魔教 = ReadUIConfig("第一次魔教")
+    第二次魔教 = ReadUIConfig("第二次魔教")
+    第三次魔教 = ReadUIConfig("第三次魔教")
+    自动闯关模式 = Array(第一次魔教,第二次魔教, 第三次魔教)
+End Function
+
+Function reset_last_fight_info
+    当前气血 = Int(ReadUIConfig("当前气血"))
+    当前武力 = Int(ReadUIConfig("当前武力"))
+    当前防御 = Int(ReadUIConfig("当前防御"))
+    当前内力 = Int(ReadUIConfig("当前内力"))
+    当前身法 = Int(ReadUIConfig("当前身法"))
+    当前关卡 = Int(ReadUIConfig("当前关卡"))
+End Function
+
 Function init_config
-    Dim read_config_from_file = ReadUIConfig("读取保存属性")
-    If read_config_from_file Then 
-        read_config()
+    init_auto_mode()
+    If ReadUIConfig("读取保存属性") Then 
+        当前气血 = Int(ReadConfig("当前气血"))
+        当前武力 = Int(ReadConfig("当前武力"))
+        当前防御 = Int(ReadConfig("当前防御"))
+        当前内力 = Int(ReadConfig("当前内力"))
+        当前身法 = Int(ReadConfig("当前身法"))
+        当前关卡 = Int(ReadConfig("当前关卡"))
     Else 
         当前气血 = Int(ReadUIConfig("当前气血"))
         当前武力 = Int(ReadUIConfig("当前武力"))
@@ -712,14 +751,14 @@ Function init_config
     End If
 End Function
 
-Function read_config
-    当前气血 = Int(ReadConfig("当前气血"))
-    当前武力 = Int(ReadConfig("当前武力"))
-    当前防御 = Int(ReadConfig("当前防御"))
-    当前内力 = Int(ReadConfig("当前内力"))
-    当前身法 = Int(ReadConfig("当前身法"))
-    当前关卡 = Int(ReadConfig("当前关卡"))
-End Function
+//Function read_config
+//    当前气血 = Int(ReadConfig("当前气血"))
+//    当前武力 = Int(ReadConfig("当前武力"))
+//    当前防御 = Int(ReadConfig("当前防御"))
+//    当前内力 = Int(ReadConfig("当前内力"))
+//    当前身法 = Int(ReadConfig("当前身法"))
+//    当前关卡 = Int(ReadConfig("当前关卡"))
+//End Function
 
 Function fill_attr_type(attr, based_attr_color)
     Dim x = attr(0), y = attr(1), i
@@ -808,7 +847,11 @@ Function attribute_adjustment
 	
     If 当前模式 = "存星" Then 
         TracePrint "由于当前模式为存星，直接加3属性"
-        add_attr (三属性)
+        If 开启自动任务 And (当前关卡 < 2) Then 
+            add_attr (三十属性)
+        Else 
+            add_attr (三属性)
+        End If
     Else 
         // 贪婪算法
         // 三十血武可加则加
@@ -989,6 +1032,7 @@ Function fast_fighting_enabled
 End Function
 
 Function 败北
+    ReleaseCapture
     Dim intX, intY, a = -1, b = -1	
     FindMultiColor 761,402,957,544,"E6E7E6","-42|-12|DEDFDE,-38|-39|DEDBDE,-92|-37|BDBABD,-94|-13|BDBABD,-44|36|DEDFDE,-23|67|DEDFDE,-97|32|B5B6B5,21|6|9CAEB5,-54|72|7B8183",0,0.9,intX,intY
     If intX > -1 And intY > -1 Then 
@@ -1017,6 +1061,16 @@ Dim 存星转力战 = 135
 Dim 存星转奋战 = 500
 
 Dim 当前模式 = "存星"
+Dim 开启自动任务 = ReadUIConfig("开启自动任务")
+Dim 开启自动巅峰 = ReadUIConfig("开启自动巅峰")
+Dim 开启自动魔教 = ReadUIConfig("开启自动魔教")
+Dim 开三倍闯关 = ReadUIConfig("开三倍闯关")
+Dim 第一次魔教 = ReadUIConfig("第一次魔教")
+Dim 第二次魔教 = ReadUIConfig("第二次魔教")
+Dim 第三次魔教 = ReadUIConfig("第三次魔教")
+Dim 自动闯关模式 = Array(第一次魔教,第二次魔教, 第三次魔教)
+// 仅作用于自动模式
+Dim fast_mode_tapped = False
 
 init_config 
 //ShowMessage "当前关卡：" & 当前关卡 & "|魔教模式：" & 当前模式
@@ -1125,6 +1179,14 @@ Function 闯关
         // TracePrint "......当前关卡为：" & 当前关卡
         If in_fighting_mode_option_ui() Then 
             Dim is_fast_fighting_enabled = fast_fighting_enabled()
+            If 开启自动任务 And (Not fast_mode_tapped) Then 
+                If Not is_fast_fighting_enabled Then 
+                    // 试图开启快速模式
+                    Tap 106, 1605
+                    Delay 1000
+                    fast_mode_tapped = True
+                End If
+            End If
             
             If 当前模式 = "闯关" Then 
                 If 当前关卡 <= 闯关转力战 Then 
@@ -1177,10 +1239,121 @@ Function 闯关
         End If
         
         If 败北() Then 
+            If 开启自动任务 Then 
+                Exit Function
+            End If
             exit_and_screen_off()
         End If
     Loop
 	
+End Function
+
+Function current_fight_no()
+    Dim intX, intY
+    // 找到 2/3
+    FindMultiColor 354,1589,423,1634,"84DBEF","8|7|8CDFEE,0|25|8CDFEF,-13|24|42BAEF,-32|9|1969FF,-45|-3|1065FF,-43|9|1065FF,-44|26|1165FF",0,0.9,intX,intY
+    If intX > -1 And intY > -1 Then 
+        current_fight_no = 1
+        Exit Function
+    End If
+    
+    // 找到 3/3
+    FindMultiColor 354,1592,426,1635,"84DBEF","5|11|84DBEF,-9|23|84DBE6,-21|11|42BAE6,-44|23|1065FF,-51|15|1065FF,-53|12|1069FF,-49|-2|1969FF",0,0.9,intX,intY
+    If intX > -1 And intY > -1 Then 
+        current_fight_no = 0
+        Exit Function
+    End If
+    
+    FindMultiColor 350, 1589, 425, 1633, "84DBEF", "5|12|8CDFEF,-10|25|5AC6EE,-20|25|42BAEF,-36|21|1065FF,-47|14|1069FF,-52|4|1065FF,-36|-9|1065FF", 0, 0.9, intX, intY
+    If intX > -1 And intY > -1 Then 
+        current_fight_no = -1
+        Exit Function
+    End If
+    
+    current_fight_no = 2
+End Function
+
+Function no_blood_war_chance
+    // 666,1485,808,1523
+    Dim intX, intY
+    FindMultiColor 350,1589,425,1633,"84DBEF","5|12|8CDFEF,-10|25|5AC6EE,-20|25|42BAEF,-36|21|1065FF,-47|14|1069FF,-52|4|1065FF,-36|-9|1065FF",0,0.9,intX,intY
+    no_blood_war_chance = (intX>-1 And intY>-1)
+End Function
+
+Function start_auto_mode
+    If False Then 
+        开启自动任务 = True
+        开启自动巅峰 = True
+        开启自动魔教 = True
+        开三倍闯关 = False
+        第一次魔教 = 0
+        第二次魔教 = 1
+        第三次魔教 = 0
+        自动闯关模式 = Array(第一次魔教,第二次魔教, 第三次魔教)	
+    End If
+	
+    Dim times, mode
+	
+    If 开启自动巅峰 Then 
+        TracePrint "开始巅峰"
+        DF_巅峰战斗主循环
+    End If
+    
+    // 不使用巅峰令牌直接关闭
+    TracePrint "开始关闭巅峰"
+    Tap 761, 1347
+    Delay 500
+    // 关闭巅峰模式
+    Tap 1016,1710
+    Delay 500
+    Tap 1016,1710
+    Delay 500
+    TracePrint "结束关闭巅峰"
+    
+    If 开启自动魔教 Then 
+        // 进入奇遇界面
+        Tap 767, 1833
+        Delay 500
+        // 通过滚动来自动找并点击魔教按钮
+        dim posx = scroll_until_mo_jiao_zong_tan_icon_found()
+        Tap posx(0), posx(1)
+        Delay 500
+        
+        While Not no_blood_war_chance()
+            // 打了几次魔教这个变量只在自动模式下起作用
+            times = current_fight_no()
+            mode = 自动闯关模式(times)
+            TracePrint "当前次数为：" & times & "|模式为：" & mode
+            If mode = 1 Then 
+                当前模式 = "闯关"
+            Else 
+                当前模式 = "存星"
+            End If
+            TracePrint "当前的模式为：" & 当前模式
+            // 点击闯关按钮
+            Tap 736, 1496
+            Delay 500
+            // 点击×号按钮（即不开启三倍模式）
+            Tap 760,1345
+            Delay 500
+            TracePrint "开始闯关：" & times
+            fast_mode_tapped = False
+            闯关
+            ReleaseCapture 
+            TracePrint "叉掉败北界面再次血战"
+            Tap 1017, 1707
+            Delay 500
+            TracePrint "叉掉领取奖励界面"
+            Tap 759, 1342
+            Delay 500
+            // 重置关卡、当前气血、武力等一系列信息
+            reset_last_fight_info
+        Wend
+        
+        // 最后停止程序并锁屏
+        exit_and_screen_off
+    End If
+    
 End Function
 
 //===================================================================
@@ -1188,17 +1361,28 @@ End Function
 //===================================================================
 
 SetScreenScale 1080, 1920
-Dim 辅助模式 = Int(ReadUIConfig("辅助模式"))
-Select Case 辅助模式
-Case 0
-    闯关 
-Case 1
-    DF_巅峰战斗主循环 
-Case 2
-    LJ_论剑 
-Case 3
-    CW_参悟 
-Case 4
-    BS_宝石合成
-End Select
+If 开启自动任务 Then 
+    start_auto_mode
+Else
+    Dim 辅助模式 = Int(ReadUIConfig("辅助模式"))
+    Select Case 辅助模式
+    Case 0
+        //    Dim times = ReadConfig("血战次数", 0)
+        //    If times > 15 Then 
+        //        ShowMessage "：）血战次数已经用尽"
+        //        EndScript
+        //    End If
+        //    WriteConfig ("血战次数", times + 1)
+        闯关 
+    Case 1
+        DF_巅峰战斗主循环 
+    Case 2
+        LJ_论剑 
+    Case 3
+        CW_参悟 
+    Case 4
+        BS_宝石合成
+    End Select
+End If
+
 ResetScreenScale 
