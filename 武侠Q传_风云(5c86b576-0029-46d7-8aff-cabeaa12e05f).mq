@@ -1,0 +1,103 @@
+Function fy_寻找并替换扫地僧
+End Function
+
+Function fy_检查阵容
+    TracePrint "检查阵容"
+    fy_寻找并替换扫地僧()
+End Function
+
+Function fy_寻找镇守
+	/*
+	 * 1） 古墓祖师<古墓祖师，襄儿，莫愁>
+	 * 2） 真贱<真贱，龙儿，老顽童|襄儿|莫愁>
+	 * 3） 假剑<假剑，过儿，老顽童|莫愁|襄儿|剑圣>
+	 * 4)  红雪<红雪， 过儿，老顽童|莫愁|襄儿>
+	 * 5)  红雪|假剑<红雪|假剑， 金轮，老顽童|莫愁|襄儿|剑圣> -- 针对古墓没找到的情况。
+	 *
+	 * 默认情况下寻找指定镇守十次，如果十次都找不到，则替换镇守。
+	 */
+	 
+    Dim 镇守编号 = -1
+    Do
+        fy_寻找真剑神 
+        fy_寻找假剑神 
+        fy_寻找傅红雪 
+        fy_寻找古墓祖师	
+    Loop
+End Function
+
+
+Function fy_刷新助战弟子列表
+    TracePrint "刷新助战弟子列表"
+    Tap x, y
+End Function
+
+Function fy_start_fighting
+	
+End Function
+
+Function fy_开始风云
+	// 点击共闯
+	Tap 606, 1423
+	Delay 300
+	// 系统提示没有勾选扫荡，直接点击下次再说。
+	Tap 300, 791
+	Delay 300
+	// 点击开始
+	Tap 110, 956
+	Delay 300
+End Function
+
+Function tapd(x, y)
+	Tap x, y
+	Delay 300
+End Function
+
+Function fy_寻找真贱
+	Dim intX, intY, nu
+	TracePrint "寻找真剑"
+	nu = FindPic(161, 1205, 840, 1442, "Attachment:真剑神.png", "202020", 0, 0.8, intX, intY)
+	If nu > -1 Then 
+		TracePrint "找到了真剑"
+		fy_寻找真贱 = Array(intX, intY)
+		Exit Function
+	End If
+	
+End Function
+
+Function fy_试探真贱镇守
+    TracePrint "试探真贱镇守"
+    // 选择初始阵容开始
+    tapd 808, 319
+    tapd 822,588
+    tapd 501,581
+    tapd 200,323
+    // 选择初始阵容结束
+    // 点击下一步
+    tapd 84, 1415
+    
+    
+    Dim try_times = 0
+    Do
+        If try_times > 19 Then 
+            TracePrint "寻找了10次，没找到真贱，放弃寻找真剑"
+            Exit Do
+        End If
+    	
+        Dim found = fy_寻找真贱
+        try_times = try_times + 1
+        If found Then 
+            Tap found(0), found(1)
+            Delay 300
+            fy_start_fighting()
+        End If
+        
+        Delay 3000
+        fy_刷新助战弟子列表 
+        Delay 300
+    Loop
+End Function
+
+Function fy_试探假剑镇守
+	
+End Function

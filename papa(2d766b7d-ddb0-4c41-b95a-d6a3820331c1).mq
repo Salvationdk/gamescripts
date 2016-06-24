@@ -668,6 +668,83 @@ Function find_mo_jiao_zong_tan_icon
     End If
 End Function
 
+Function 寻找确定按钮并点击
+    Dim intX, intY
+    FindMultiColor 201,809,614,1161,"94DBF7","5|42|9CDFEF,-22|60|73D7EF,-6|60|6B7921,5|-38|7B8119,53|23|4396B5,-54|50|4A96B5,-34|-28|738A21,-55|111|32768C,55|148|397184",0,0.95,intX,intY
+    If intX>-1 And intY>-1 Then 
+        Tap intX, intY
+        TracePrint "点击了确定按钮"
+        Delay 500
+    End If
+End Function
+
+Function 自动化_寻找保护姥姥
+    Dim intX, intY
+    FindMultiColor 25,155,295,1761,"EFEFFF","-24|21|EEEFFF,-22|-22|EFEFFF,2|-19|422000,1|29|4A2400,30|-1|4A5DEF,-49|-29|E6EFFF,-53|55|EEEFFF,53|3|392429,19|61|4A454A",0,0.9,intX,intY
+    If intX > -1 And intY > -1 Then 
+        TracePrint "找到了姥姥"
+        Tap intX, intY
+        TracePrint "点击了姥姥"
+        Delay 200
+        // 点击保护按钮
+        Tap 510, 920
+        Delay 500
+        寻找确定按钮并点击
+    End If
+End Function
+
+Function 自动化_寻找魔教总坛
+    Dim intX, intY
+    FindMultiColor 25,155,295,1761,"CE35AD","-36|-17|19CFFF,-45|24|0045DE,-63|-42|0071EF,-83|-6|DEDBFF,-97|29|DEDFFF,-107|-14|DEDBFF,-123|8|DEDBFF,-79|19|292C29",0,0.9,intX,intY
+    If intX > -1 And intY > -1 Then 
+        TracePrint "找到了魔教总坛图标"
+        Tap intX, intY
+        TracePrint "点击了魔教总坛"
+        Delay 200
+    End If
+End Function
+
+Function 寻找发布确认界面并发布
+    Dim intX, intY
+    FindMultiColor 677,577,750,646,"299A21","-8|7|319A19,-15|14|399A21,11|29|319A21,23|38|399A21,-16|30|73BAD6,10|13|7BBED6,-20|-1|7BBEDE",0,0.9,intX,intY
+    If intX>-1 And intY>-1 Then 
+        Tap 306, 981
+        TracePrint "点击了发布"
+        Delay 500
+    End If
+End Function
+
+Function 自动化_寻找每日签到
+    Dim intX, intY
+    FindMultiColor 25,155,295,1761,"FFFFFF","-9|-14|4AD7EF,-12|-40|000000,-31|-42|CEEBF7,-39|-44|000000,-38|-36|C5E6F7,26|18|2161A5,-20|-61|9C9A52,-25|42|737542,-63|-36|7B96A5",0,0.9,intX,intY
+    If intX > -1 And intY > -1 Then 
+        TracePrint "找到了每日签到"
+        Tap intX, intY
+        TracePrint "点击了每日签到"
+        Delay 200
+        Tap 395, 1493
+        TracePrint "点击了发布江湖令"
+        Delay 500
+        寻找发布确认界面并发布
+    End If
+End Function
+
+Function 自动化_寻找门派矿山
+    Dim intX, intY
+    FindMultiColor 25, 155, 295, 1761, "E6FFFF", "-1|10|DEFBFF,-5|-19|EFFFFF,-27|-34|EFFFFF,24|39|E61063,36|52|10148C,21|-16|525108,75|-19|100029,-45|68|633542,-19|-44|100031", 0, 0.9, intX, intY
+    If intX > -1 And intY > -1 Then 
+        TracePrint "找到了门派矿山"
+        //    	Tap intX, intY
+        //    	TracePrint "点击了门派矿山"
+        //    	Delay 500
+    End If
+End Function
+
+Function 自动化奇遇
+    ReleaseCapture 
+    // TODO WILL BE AMAZING
+End Function
+
 Function scroll_until_mo_jiao_zong_tan_icon_found
     ReleaseCapture
     Dim result = find_mo_jiao_zong_tan_icon()
@@ -677,11 +754,11 @@ Function scroll_until_mo_jiao_zong_tan_icon_found
         Exit Function
     End If
 	
-    // 将滚动条滚动到最左边
-    For 3
-        Swipe 174, 248, 174, 1751, 200
-    Next
-    Delay 1000
+    //    // 将滚动条滚动到最左边
+    //    For 3
+    //        Swipe 174, 248, 174, 1751, 200
+    //    Next
+    //    Delay 1000
     
     // 向左滚动直到找到魔教总坛图标为止
     Do
@@ -708,12 +785,13 @@ Function init_auto_mode
 End Function
 
 Function reset_last_fight_info
-    当前气血 = Int(ReadUIConfig("当前气血"))
-    当前武力 = Int(ReadUIConfig("当前武力"))
-    当前防御 = Int(ReadUIConfig("当前防御"))
-    当前内力 = Int(ReadUIConfig("当前内力"))
-    当前身法 = Int(ReadUIConfig("当前身法"))
-    当前关卡 = Int(ReadUIConfig("当前关卡"))
+    当前气血 = 0
+    当前武力 = 0
+    当前防御 = 0
+    当前内力 = 0
+    当前身法 = 0
+    当前关卡 = 1
+    当前属性 = Array (当前气血, 当前武力, 当前防御, 当前内力, 当前身法, 当前关卡)
 End Function
 
 Function init_config
@@ -739,6 +817,7 @@ Function init_config
     最大防御 = Int(ReadUIConfig("最大防御"))
     最大内力 = Int(ReadUIConfig("最大内力"))
     最大身法 = Int(ReadUIConfig("最大身法"))
+    最大关卡 = 1002
 	
     闯关转力战 = Int(ReadUIConfig("闯关转力"))
     闯关转奋战 = Int(ReadUIConfig("闯关转奋"))
@@ -848,7 +927,13 @@ Function attribute_adjustment
     If 当前模式 = "存星" Then 
         TracePrint "由于当前模式为存星，直接加3属性"
         If 开启自动任务 And (当前关卡 < 2) Then 
-            add_attr (三十属性)
+            If 三十属性(2) >= 0 Then 
+                add_attr (三十属性)
+            ElseIf 十五属性(2) >= 0 Then
+                add_attr (十五属性)
+            Else 
+                add_attr (三属性)
+            End If
         Else 
             add_attr (三属性)
         End If
@@ -963,6 +1048,13 @@ Function 奋战
     TracePrint "点击了奋战"
 End Function
 
+Function 试图自杀
+    // 这个函数是为了到达设置的最大关卡时，点击血战自杀，但是能不能自杀的了，还要看你在最大关卡时点击血战是否会挂掉。
+    If 当前关卡 >= 最大关卡 Then 
+        血战
+    End If
+End Function
+
 Function find_skipable_btn
     Dim intX, intY
 	
@@ -1048,12 +1140,12 @@ Dim 最大内力 = 9999
 Dim 最大身法 = 9999
 Dim 最大关卡 = 9999
 
-Dim 当前气血 = 210
-Dim 当前武力 = 90
-Dim 当前防御 = 120
-Dim 当前内力 = 30
-Dim 当前身法 = 120
-Dim 当前关卡 = 63
+Dim 当前气血 = 0
+Dim 当前武力 = 0
+Dim 当前防御 = 0
+Dim 当前内力 = 0
+Dim 当前身法 = 0
+Dim 当前关卡 = Int(ReadUIConfig("当前关卡"))
 
 Dim 闯关转力战 = 420
 Dim 闯关转奋战 = 440
@@ -1187,6 +1279,8 @@ Function 闯关
                     fast_mode_tapped = True
                 End If
             End If
+            
+            试图自杀
             
             If 当前模式 = "闯关" Then 
                 If 当前关卡 <= 闯关转力战 Then 
@@ -1350,6 +1444,11 @@ Function start_auto_mode
             reset_last_fight_info
         Wend
         
+        TracePrint "叉掉败北领取奖励"
+        Tap 1017, 1707
+        Delay 500
+        
+        
         // 最后停止程序并锁屏
         exit_and_screen_off
     End If
@@ -1384,5 +1483,4 @@ Else
         BS_宝石合成
     End Select
 End If
-
 ResetScreenScale 
