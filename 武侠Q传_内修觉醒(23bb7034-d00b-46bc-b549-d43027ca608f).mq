@@ -1,0 +1,72 @@
+Function CMM_tapd(x, y, delays)
+    Tap x, y
+    Delay delays
+End Function
+
+Function CMM_进入副本活动
+    CMM_tapd(606,1797, 500)
+End Function
+
+Function linjie_放大镜()
+    Dim intX,intY
+    FindMultiColor 503,404,594,496,"C5CA83","-23|-27|6B7131,-21|-43|83E7FF,-57|-17|525910,-41|4|73D2EE,-22|5|7B9621",0,0.9,intX,intY
+    linjie_放大镜 = (intX > -1 And intY > -1)
+End Function
+    
+Function nx_jx_次数用完
+    Dim intX,intY
+    FindMultiColor 672,1208,952,1488,"A4DBEF","-15|17|9CE7F7,-36|37|9CDFF7,4|34|94DBEF,-36|-2|94DBEF,2|16|3A6DF7,-34|16|4275F7,-16|34|3A75EF,-16|-4|426DF7,-67|20|3A81B5",0,0.9,intX,intY
+    nx_jx_次数用完 = Array(intX, intY)
+End Function
+
+Function nx_jx_通关
+    Dim intX,intY
+    FindMultiColor 836,758,970,1090,"FFFFFF","1|55|212CBD,-2|66|00DFFF,-24|98|00BAFF,22|117|5BF7FF,4|127|1920AD,-33|81|2124B5,-2|168|00DFFF,43|208|94FFFF,72|190|63B6E6",0,0.9,intX,intY
+    nx_jx_通关 = (intX > -1 And intY > -1)
+End Function
+
+Function nx_jx_尝试点击跳过按钮
+    CMM_tapd 90, 952, 500
+End Function
+
+Function nx_jx_fight(x, y)
+    Rem Loop_nx_jx
+    Dim r
+    CMM_tapd x, y, 500
+    Do
+        r = nx_jx_次数用完()
+        If r(0) > -1 And r(1) > -1 Then 
+            TracePrint "次数用完了"
+            CMM_tapd r(0), r(1), 300
+            Exit Function
+        End If
+        
+        If nx_jx_通关() Then 
+            // 点击确定领取奖励
+            TracePrint "通关"
+            CMM_tapd 203, 958, 300
+            Goto Loop_nx_jx
+        End If
+        
+        nx_jx_尝试点击跳过按钮 
+    Loop
+End Function
+
+Function nx_内修
+    CMM_进入副本活动 
+    CMM_tapd 709, 856, 500
+    nx_jx_fight  323,339
+    nx_jx_fight 325,743
+    CMM_tapd 1018,1708, 300
+End Function
+
+Function jx_觉醒
+    CMM_进入副本活动 
+    CMM_tapd 711,1066, 500
+    nx_jx_fight 326,1160
+    nx_jx_fight 321,1568
+    CMM_tapd 1018,1708, 300
+End Function
+
+nx_内修
+jx_觉醒 
